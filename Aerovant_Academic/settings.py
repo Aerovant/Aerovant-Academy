@@ -27,7 +27,13 @@ SECRET_KEY = 'django-insecure-)mbee0ycr589t4&_5z36oqi&35ss-jv+ipd197my)%liuvlxtd
 DEBUG = False
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['aerovant-academy.onrender.com', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['aerovant-academy.onrender.com', 'localhost', '127.0.0.1']
+
+ALLOWED_HOSTS = [
+    "aerovantacademy.com",
+    "www.aerovantacademy.com",
+    "aerovant-academy.onrender.com"
+]
 
 # Application definition
 
@@ -127,7 +133,6 @@ USE_TZ = True
 
 import os
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -136,12 +141,26 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Static files (CSS, JavaScript, Images)
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Media files (uploaded images)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -149,6 +168,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Mail sending process
+
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
