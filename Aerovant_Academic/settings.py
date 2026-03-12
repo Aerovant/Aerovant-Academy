@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-)mbee0ycr589t4&_5z36oqi&35ss-jv+ipd197my)%liuvlxtd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aerovant-academy.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
