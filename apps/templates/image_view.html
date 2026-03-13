@@ -1,1070 +1,1280 @@
-{% load static %}
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from .models import Messages, Course, Gallery, Certificate, Syllabus, Attendance, Staff, ClassNote, admission
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from django.conf import settings
+import re, os
+from django.utils import timezone
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.views.decorators.http import require_http_methods
+import logging
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
+import csv
+from django.db.models import Q
+from django.http import JsonResponse, FileResponse
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+from django.views.decorators.http import require_POST
+import json
+from django.views.decorators.cache import never_cache
+from functools import wraps
+from PIL import Image
+from datetime import date
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Aerovant Academy | Campus Memories Gallery</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+# ================= NO CACHE DECORATOR =================
+def no_cache(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        response = view_func(request, *args, **kwargs)
+        response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+        return response
+    return wrapper
 
-    <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text-primary: #1a202c;
-            --text-secondary: #4a5568;
-        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background: #f7fafc; overflow-x: hidden; 
-     padding-top:80px; }
+# ================= LOGIN VIEW =================
+@never_cache
+def login_view(request):
 
-         /* GLASSMORPHISM NAVBAR */
-.navbar-glass {
-    {% comment %} background: rgba(141, 137, 137, 0.49) !important; {% endcomment %}
-    background: linear-gradient(-45deg,rgba(50, 75, 122, 0.88),rgba(15, 15, 71, 0.7),rgb(0, 0, 0));
-    backdrop-filter: blur(5px) saturate(100%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    box-shadow: 0 8px 32px rgba(30, 30, 36, 0.37);
-    padding: 1rem 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
+    if request.method == "POST":
 
-/* SMOOTH NAV LINKS */
-.smooth-nav {
-    font-weight: 600 !important;
-    font-size: 1.2rem !important;
-    color: rgba(255, 255, 255, 0.9) !important;
-    padding: 0.75rem 1.5rem !important;
-    border-radius: 25px !important;
-    margin: 0 0.25rem !important;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-}
+        user_type = request.POST.get("user_type")
+        email = request.POST.get("username")
+        password = request.POST.get("password")
 
-.smooth-nav::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.6s;
-}
+        # ================= STUDENT LOGIN =================
+        if user_type == "student":
+            try:
+                student = admission.objects.get(email=email)
 
-.smooth-nav:hover::before {
-    left: 100%;
-}
+                if student.stu_id == password:
+                    request.session["user_type"] = "student"
+                    request.session["stu_id"] = student.stu_id
+                    request.session["student_name"] = student.full_name
 
-.smooth-nav:hover {
-    color: #fff !important;
-    background: rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(10px);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
+                    return redirect("student_details")
 
-/* GLASS DROPDOWN */
-.glass-dropdown {
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 15px !important;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    margin-top: 10px;
-    animation: dropdownSlide 0.3s ease-out;
-}
+                else:
+                    messages.error(request, "Invalid Student ID")
 
-.dropdown-item {
-    color: #333 !important;
-    padding: 12px 20px !important;
-    border-radius: 10px !important;
-    transition: all 0.3s ease;
-}
+            except admission.DoesNotExist:
+                messages.error(request, "Student not found")
 
-.dropdown-item:hover {
-    background: rgba(59, 130, 246, 0.1) !important;
-    color: #3b82f6 !important;
-    transform: translateX(5px);
-}
 
-/* SMOOTH TOGGLER */
-.navbar-toggler {
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    color:white;
-    border-radius: 10px !important;
-    padding: 8px 12px !important;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
+        # ================= STAFF LOGIN =================
+        elif user_type == "staff":
+            try:
+                staff = Staff.objects.get(email=email)
 
-.navbar-toggler:focus {
-    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
-}
+                if staff.staff_id == password:
 
-/* ANIMATIONS */
-@keyframes dropdownSlide {
-    from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
+                    request.session["user_type"] = "staff"
+                    request.session["staff_id"] = staff.staff_id
+                    request.session["staff_name"] = staff.first_name
+
+                    return redirect("staff")
+
+                else:
+                    messages.error(request, "Invalid Staff ID")
+
+            except Staff.DoesNotExist:
+                messages.error(request, "Staff not found")
+
+
+        # ================= ADMIN LOGIN =================
+        elif user_type == "admin":
+
+            ADMIN_EMAIL = "admin@aerovant.com"
+            ADMIN_PASSWORD = "Admin@123"
+
+            if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+                request.session["user_type"] = "admin"
+                return redirect("admin_dashboard")
+
+            else:
+                messages.error(request, "Invalid Admin Credentials")
+
+    return render(request, "login.html")
+
+@never_cache
+def student_dashboard(request):
+
+    if request.session.get("user_type") != "student":
+        return redirect("login")
+
+    stu_id = request.session.get("stu_id")
+
+    certificates = Certificate.objects.filter(stu_id=stu_id)
+
+    context = {
+        "certificates": certificates
     }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+
+    return render(request, "student_dashboard.html", context)
+
+# ================= STAFF DASHBOARD =================
+@no_cache
+def staff_dashboard(request):
+
+    if request.session.get("user_type") != "staff":
+        return redirect("login")
+
+    staff_id = request.session.get("staff_id")
+
+    staff = get_object_or_404(Staff, staff_id=staff_id)
+
+     # Courses handled
+    courses = Course.objects.filter(staff=staff)
+
+    # Notes
+    notes = ClassNote.objects.all().order_by("-uploaded_at")
+
+    # Syllabus
+    syllabus_list = Syllabus.objects.all()
+
+    # Total students in department
+    total_stu = admission.objects.filter(department=staff.department).count()
+
+    context = {
+        "staff": staff,
+        "courses": courses,
+        "notes": notes,
+        "syllabus_list": syllabus_list,
+        "total_stu": total_stu
     }
-}
+    
+    
 
-/* SCROLL TRANSPARENCY EFFECT */
-@media (min-width: 992px) {
-    .navbar-glass.scrolled {
-        background: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(25px);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    return render(request, "staff.html", context)
+
+
+# ================= ADMIN DASHBOARD =================
+@no_cache
+def admin_dashboard(request):
+
+    if request.session.get("user_type") != "admin":
+        return redirect("login")
+
+    return render(request, "dashboard.html")
+
+
+# ================= LOGOUT =================
+@never_cache
+def logout_view(request):
+
+    request.session.flush()
+
+    return redirect("login")
+#----=====================================================
+
+def home(request):
+    
+    return render(request, "index.html")
+
+
+def about(request):
+    return render(request,"about.html")
+#======================= Staff and student details viewer =======================
+
+
+@never_cache
+def staff(request):
+
+    # 🔐 Security Check
+    if request.session.get("user_type") != "staff":
+        return redirect("login")
+
+    staff_id = request.session.get("staff_id")
+
+    try:
+        # ================= STAFF PROFILE =================
+        staff = Staff.objects.get(staff_id=staff_id)
+
+        # ================= DEPARTMENTS =================
+        departments = staff.departments.split(",")
+
+        # Count departments
+        dept_count = len(departments)
+
+        # ================= STUDENTS =================
+        students = admission.objects.filter(course__in=departments)
+
+        total_students = students.count()
+
+        # ================= TODAY ATTENDANCE =================
+        attendance = Attendance.objects.filter(
+            student__in=students,
+            date=date.today()
+        )
+        notes = ClassNote.objects.filter(department__in=departments)
+        syllabus_list = Syllabus.objects.filter(course__in=departments)
+
+    except Staff.DoesNotExist:
+        return redirect("login")
+
+    context = {
+        "staff": staff,
+        "departments": departments,
+        "dept_count": dept_count,
+        "students": students,
+        "total_students": total_students,
+        "attendance": attendance,
+        'notes':notes,
+        "syllabus_list":syllabus_list
     }
-}
-       
 
-        /* Hero */
-       .hero { 
-            min-height: 80vh; 
-            display: flex; 
-            align-items: center; 
-            position: relative; 
-            overflow: hidden;
-            background: transparent;   /* IMPORTANT */
-        }
+    return render(request, "staff.html", context)
 
-        .hero::before { 
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
+#==============Staff logic =====================
 
-            /* Gradient overlay */
-            background: linear-gradient(
-                135deg,
-                rgba(102,126,234,0.7),
-                rgba(118,75,162,0.7),
-                rgba(23,19,24,0.8)
-            );
+def staff_register(request):
 
-            z-index: 1;
-        }
+    query = request.GET.get("q", "").strip()
 
-        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(180deg); } }
+    all_staff = Staff.objects.all().order_by("-created_at")
+
+    # 🔎 SEARCH
+    if query:
+        all_staff = all_staff.filter(
+            Q(staff_id__icontains=query) |
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(phone__icontains=query) |
+            Q(email__icontains=query) |
+            Q(departments__icontains=query)
+        )
+
+    # =========================
+    # ➕ ADD STAFF
+    # =========================
+    if request.method == "POST" and "add_staff" in request.POST:
+
+        first_name = request.POST.get("first_name", "").strip()
+        last_name = request.POST.get("last_name", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        password = request.POST.get("password", "")
+        password2 = request.POST.get("password2", "")
+        image = request.FILES.get("image")
+        departments = request.POST.getlist("departments")
         
-        .hero-content { position: relative; z-index: 5; }
 
-        .hero h1 { 
-            font-size: clamp(3rem, 8vw, 6rem); 
-            font-weight: 800; 
-            background: rgba(255,255,255,0.9); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            background-clip: text; 
-            margin-bottom: 2rem; 
-            line-height: 1.1; 
-        }
-        .hero-lead { font-size: 1.4rem; color: rgba(255,255,255,0.9); margin-bottom: 3rem; max-width: 600px; }
+        if not all([first_name, last_name, email, password, departments]):
+            messages.error(request, "All required fields must be filled!")
+            return redirect("staff_register")
 
-        /* Gallery Stats */
-        .stats-section { padding: 6rem 0; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); }
-        .stat-number { font-size: 4rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+            messages.error(request, "Invalid email format!")
+            return redirect("staff_register")
 
-        /* Gallery Cards */
-        .gallery-section { padding: 6rem 0; background: var(--glass-bg); }
-        .gallery-card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(255,255,255,0.3);
-            height: 100%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-        .gallery-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
-        }
-        .gallery-img {
-            height: 250px;
-            object-fit: cover;
-            width: 100%;
-            transition: transform 0.4s ease;
-        }
-        .gallery-card:hover .gallery-img { transform: scale(1.1); }
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            color: white;
-            padding: 2rem 1.5rem 1.5rem;
-        }
+        if Staff.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists!")
+            return redirect("staff_register")
 
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
-        .modal.show { display: block !important; animation: modalFadeIn 0.5s ease-out; }
-        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .modal-content { 
-            background: rgba(255,255,255,0.95); 
-            backdrop-filter: blur(20px); 
-            margin: 5% auto; 
-            padding: 0; 
-            border-radius: 24px; 
-            width: 90%; 
-            max-width: 900px; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-            border: 1px solid rgba(255,255,255,0.3); 
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4); 
-        }
-        .modal-header { padding: 2.5rem 2.5rem 2rem; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: center; position: relative; }
-        .modal-title { font-size: 2rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0 0 1rem 0; }
-        .close { position: absolute; right: 2rem; top: 2rem; color: #999; font-size: 2rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
-        .close:hover { background: rgba(0,0,0,0.1); color: var(--text-primary); transform: rotate(90deg); }
-        .modal-body { padding: 2.5rem; }
-        .modal-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        if phone and not re.match(r'^[6-9]\d{9}$', phone):
+            messages.error(request, "Enter valid 10-digit phone number!")
+            return redirect("staff_register")
 
-        .footer { background: linear-gradient(135deg, #1a202c, #2d3748); color: white; padding: 4rem 0 2rem; }
+        if password != password2:
+            messages.error(request, "Passwords do not match!")
+            return redirect("staff_register")
 
-        @media (max-width: 768px) { .gallery-img { height: 200px !important; } }
+        if len(password) < 8:
+            messages.error(request, "Password must be at least 8 characters!")
+            return redirect("staff_register")
 
-        .text-light {
-    text-decoration: none !important;
-}
 
-/* TOP SECTION */
-.footer-top {
-    padding: 60px 20px 30px;
-    
-}
-.aero-footer {
-    background: rgba(5, 17, 78, 0.93); backdrop-filter: blur(20px);
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
-}
+        Staff.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            password=make_password(password),
+            image=image,
+            credentials_sent=False,
+            departments=",".join(departments)
+        )
 
-.footer-title {
-    font-weight: 800;
-    font-size: 32px;
-}
+        messages.success(request, "Staff added successfully!")
+        return redirect("staff_register")
 
-.footer-subtitle {
-    max-width: 700px;
-    margin: 15px auto 30px;
-    color: #555;
-}
+    # =========================
+    # 📧 SEND CREDENTIALS
+    # =========================
+    if request.method == "POST" and "send_credentials" in request.POST:
 
-.social-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    margin: 0 10px;
-    border-radius: 50%;
-    background: #fff8f800;
-    color: #ffffff;
-    font-size: 18px;
-    box-shadow: 0 4px 10px rgb(255, 244, 244);
-    transition: 0.3s;
-}
+        staff_id = request.POST.get("staff_id")
+        staff = get_object_or_404(Staff, id=staff_id)
 
-.social-icons a:hover {
-    background: #0057fa;
-    transform: translateY(-5px);
-}
+        subject = "Your Staff Account Credentials"
 
-/* MAIN LINKS */
-.footer-main {
-    padding: 40px 0;
-    
-}
+        message = f"""
+Hello {staff.first_name},
 
-.footer-main h6,
-.footer-main h5 {
-    margin-bottom: 15px;
-}
+Your login credentials:
 
-.footer-main ul {
-    list-style: none;
-    padding: 0;
-}
+Username: {staff.email}
+Password: {staff.staff_id}
 
-.footer-main ul li {
-    margin-bottom: 8px;
-}
+Please login useing those credential .
 
-.footer-main ul li a {
-    text-decoration: none;
-    color: #444;
-    transition: 0.3s;
-}
+Regards,
+Admin Team
+"""
 
-.footer-main ul li a:hover {
-    color: #ffcc00;
-}
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [staff.email],
+            fail_silently=False,
+        )
 
-/* BOTTOM STRIP */
-.footer-bottom {
-    background: #e9e9e9;
-    padding: 20px 0;
-    font-weight: 500;
-}
+        staff.credentials_sent = True
+        staff.save()
 
-.demo-btn {
-    padding: 10px 25px;
-    border: 2px solid #764ba2;
-    border-radius: 6px;
-    text-decoration: none;
-    color: #111;
-    font-weight: 600;
-    transition: 0.3s;
-}
+        messages.success(request, "Credentials sent successfully!")
+        return redirect("staff_register")
 
-.demo-btn:hover {
-    background: #eef1f5;
-    color: #000;
-}
+    # =========================
+    # ✏️ UPDATE STAFF
+    # =========================
+    if request.method == "POST" and "update_staff" in request.POST:
 
-/* Responsive */
-@media(max-width:768px){
-    .footer-title {
-        font-size: 24px;
+        staff_id = request.POST.get("staff_id")
+        staff = get_object_or_404(Staff, id=staff_id)
+
+        staff.first_name = request.POST.get("first_name", "").strip()
+        staff.last_name = request.POST.get("last_name", "").strip()
+        staff.email = request.POST.get("email", "").strip()
+        staff.phone = request.POST.get("phone", "").strip()
+        departments = request.POST.getlist("departments")
+        staff.departments = ",".join(departments)
+        staff.save()
+
+        messages.success(request, "Staff updated successfully!")
+        return redirect("staff_register")
+
+    # =========================
+    # ❌ DELETE STAFF
+    # =========================
+    if request.method == "POST" and "delete_staff" in request.POST:
+
+        staff_id = request.POST.get("staff_id")
+        staff = get_object_or_404(Staff, id=staff_id)
+        staff.delete()
+
+        messages.success(request, "Staff deleted successfully!")
+        return redirect("staff_register")
+
+    # =========================
+    # ❌ DELETE ALL STAFF
+    # =========================
+    if request.method == "POST" and "delete_all" in request.POST:
+
+        Staff.objects.all().delete()
+        messages.success(request, "All staff deleted successfully!")
+        return redirect("staff_register")
+
+    # =========================
+    # ❌ BULK DELETE
+    # =========================
+    if request.method == "POST" and "bulk_delete" in request.POST:
+
+        selected_ids = request.POST.getlist("selected_ids")
+
+        if selected_ids:
+            Staff.objects.filter(id__in=selected_ids).delete()
+            messages.success(request, "Selected staff deleted successfully!")
+        else:
+            messages.warning(request, "No staff selected!")
+
+        return redirect("staff_register")
+
+    # =========================
+    # 📊 CONTEXT DATA
+    # =========================
+    context = {
+        "all_staff": all_staff,
+        "query": query,
+        "total_staff": all_staff.count(),
     }
-    .footer-bottom {
-        text-align: center;
-        gap: 15px;
+
+    return render(request, "dashboard/staff_register.html", context)
+#========================== Staff csv file =====================
+def export_staff(request):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="staff.csv"'
+
+    writer = csv.writer(response)
+
+    # Header Row
+    writer.writerow([
+        "ID",
+        "Staff ID",
+        "First Name",
+        "Last Name",
+        "Email",
+        "Phone",
+        "Department",
+        "Created Date"
+    ])
+
+    staff_members = Staff.objects.all().order_by("-created_at")
+
+    for staff in staff_members:
+        writer.writerow([
+            staff.id,
+            staff.staff_id,
+            staff.first_name,
+            staff.last_name,
+            staff.email,
+            staff.phone,
+            staff.departments,
+            staff.created_at
+        ])
+
+    return response
+# ================= STAFF DASHBOARD =================
+#========================= Staff upload notes====================
+
+
+# ================= NOTES UPLOAD =================
+def upload_notes_staff(request):
+
+    if request.method == "POST":
+
+        department = request.POST.get("department")
+        topic = request.POST.get("topic")
+        file = request.FILES.get("file")
+        description = request.POST.get("description")
+        visibility = request.POST.get("visibility")
+
+        ClassNote.objects.create(
+            department=department,
+            topic=topic,
+            file=file,
+            description=description,
+            visibility=visibility
+        )
+
+        messages.success(request, "Notes uploaded successfully!")
+
+        return redirect("/staff/#upload-notes")
+
+
+# ================= EDIT NOTE =================
+def edit_note(request, id):
+
+    note = get_object_or_404(ClassNote, id=id)
+
+    if request.method == "POST":
+
+        note.department = request.POST.get("department")
+        note.topic = request.POST.get("topic")
+        note.description = request.POST.get("description")
+        note.visibility = request.POST.get("visibility")
+
+        if request.FILES.get("file"):
+            note.file = request.FILES.get("file")
+
+        note.save()
+
+        messages.success(request, "Note updated successfully!")
+
+        return redirect("/staff/#upload-notes")
+
+    context = {
+        "note": note
     }
-}
 
-.smiley-movers {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%; /* 4x container width for seamless loop */
-    height: 100%;
-    display: flex;
-    animation: slide-movers 20s linear infinite;
-}
-
-/* .mover {
-    width: 25%; 
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.7;
-} */
-
-.mover {
-    width: 25%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.45;
-    min-width: 25%;
-}
+    return render(request, "edit_note.html", context)
 
 
-.smiley-movers {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 400%;
-    height: 100%;
-    display: flex;
-    animation: slide-movers 20s linear infinite;
-    z-index: 0;
-}
+# ================= DELETE NOTE =================
+def delete_note(request, id):
 
-.hero {
-    position: relative;
-    overflow: hidden;
-}
+    note = get_object_or_404(ClassNote, id=id)
 
-.hero::before {
-    z-index: 1; /* keep animated dots above images */
-}
+    note.delete()
 
-@keyframes slide-movers {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* Moves 3/4 width for loop */
-}
+    messages.success(request, "Note deleted successfully!")
 
-/* Stagger entrance for layered effect */
-.mover1 { animation-delay: 0s; }
-.mover2 { animation-delay: 5s; }
-.mover3 { animation-delay: 10s; }
-.mover4 { animation-delay: 15s; }
+    return redirect("/staff/#upload-notes")
 
-/* Responsive */
-@media (max-width: 768px) {
-    .smiley-movers { animation-duration: 30s; } /* Slower on mobile */
-}
 
-.logo-img {
-    height: 80px;
-    width: auto;
-    max-width: 220px;
-    padding: 8px;
-    opacity: 1.90;                                /* Overall element opacity */
-    border-radius: 16px; 
-   
-}
+# ================= SYLLABUS UPLOAD =================
+def upload_syllabus(request):
 
-/* HOVER - Enhanced Opacity Effect */
-.logo-smooth:hover .logo-img {
-    opacity: 4;                                  /* Full opacity on hover */
-    transform: translateY(-6px) scale(1.04);     /* Lift animation */
-    box-shadow: 0 20px 48px rgba(7, 18, 85, 0.8);
-}
- /* modal styles */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
-        .modal.show { display: block !important; animation: modalFadeIn 0.5s ease-out; }
-        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .modal-content {background: radial-gradient(circle at 30% 20%, rgba(230, 230, 230, 0.3), transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(139,92,246,0.3), transparent 50%),
-                        linear-gradient(135deg, rgba(15,15,35,0.9), rgba(30,30,63,0.9)); backdrop-filter: blur(20px);
-                         backdrop-filter: blur(20px); margin: 8% auto; padding: 0; border-radius: 24px; width: 90%; max-width: 550px; 
-                         max-height: 85vh; overflow-y: auto; border: 1px solid rgba(2, 27, 252, 0.3); 
-                         box-shadow: 0 30px 80px rgba(130, 15, 238, 0.4); 
-                         animation: modalSlideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-                         transform-origin: center top; }
-        .modal.show .modal-content { transform: scale(1);
-        color:white; }
-        @keyframes modalSlideIn { from { opacity: 0; transform: scale(0.7) translateY(-30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        .modal-header { padding: 2.5rem 2.5rem 2rem; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: center; position: relative; }
-        .modal-title { font-size: 2rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0 0 1rem 0; }
-        .modal-badge { display: inline-flex; background: var(--secondary-gradient); color: white; padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; }
-        .close { position: absolute; right: 2rem; top: 2rem; color: #999; font-size: 2rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
-        .close:hover { background: rgba(0,0,0,0.1); color: var(--text-primary); transform: rotate(90deg); }
-        .modal-body { 
-            padding: 2.5rem; 
-            width:500px;
-            height:500px;
-        }
-        .urgency-text { background: linear-gradient(135deg, #18f5d0, #115bfa); color: white; padding: 1rem; border-radius: 16px; margin-bottom: 2rem; text-align: center; font-weight: 600; }
+    if request.method == "POST":
+
+        course = request.POST.get("course")
+        topic = request.POST.get("topic")
+        syllabus_file = request.FILES.get("syllabus_file")
+
+        Syllabus.objects.create(
+            course=course,
+            topic=topic,
+            syllabus_file=syllabus_file
+        )
+
+        messages.success(request, "Syllabus uploaded successfully!")
+
+        return redirect("/staff/#upload-syllabus")
+
+#=================== Update syllabus ==========================
+
+def edit_syllabus(request, id):
+
+    syllabus = get_object_or_404(Syllabus, id=id)
+
+    if request.method == "POST":
+
+        syllabus.course = request.POST.get("course")
+        syllabus.topic = request.POST.get("topic")
+
+        if request.FILES.get("syllabus_file"):
+            syllabus.syllabus_file = request.FILES.get("syllabus_file")
+
+        syllabus.save()
+
+        messages.success(request, "Syllabus updated successfully!")
+
+        return redirect("/staff/#upload-syllabus")
+
+    return redirect("/staff/#upload-syllabus")
+
+#==================== Delete Syllabus =======================
+
+def delete_syllabus(request, id):
+
+    syllabus = get_object_or_404(Syllabus, id=id)
+    syllabus.delete()
+
+    messages.success(request, "Syllabus deleted successfully!")
+
+    return redirect("/staff/#upload-syllabus")    
 
 
 
-    </style>
-</head>
-<body>
+#-------------------------------------------------------------------------
+
+def dashboard(request):
+    total_courses = Course.objects.count()
+    total_enquiries = Messages.objects.count()
+    total_images=Gallery.objects.count() 
+    total_students=admission.objects.count()
+    # 👈 Added this line
+
+    return render(request, 'dashboard/dashboard.html', {
+        'total_courses': total_courses,
+        'total_enquiries': total_enquiries,  
+        'total_images':total_images,
+        'total_students':total_students,# 👈 Send to template
+        
+    })
+
+
+def Messages_details(request):
+    if request.method == "POST":
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        course = request.POST.get('course', '').strip()
+        message = request.POST.get('message', '').strip()
+        
+        # Check all fields filled
+        if not all([full_name, email, phone, course, message]):
+            messages.error(request, 'Please fill all required fields correctly.')
+            return redirect('/home#contact')
+        
+        # Email validation
+        if '@' not in email or '.' not in email or not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', email):
+            messages.error(request, 'Please enter a valid email address.')
+            return redirect('/home#contact')
+        
+        # Phone validation - FIXED
+        phone_digits = re.sub(r'\D', '', phone)
+        if len(phone_digits) != 10 or phone_digits[0] not in '6789':
+            messages.error(request, 'Enter valid 10-digit mobile (starts with 6-9)')
+            return redirect('/home#contact')
+        
+        # Save data
+        Messages.objects.create(
+            full_name=full_name,
+            email=email,
+            phone=phone_digits,  # Store clean digits only
+            course=course,
+            message=message
+        )
+        messages.success(request, 'Thank you! We will contact you within 24 hours.')
+        return redirect('/home#contact')
     
-   <header>    
-    <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
-        <div class="container">
-           <a class="navbar-brand logo-smooth" href="/home/">
-    <img src="{% static 'images/logo (3).png' %}" alt="Aerovant Academy" class="logo-img">
-</a>
+    return render(request, 'index.html')
 
-            <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon color-white"></span>
-            </button>
-            <div class="navbar-collapse collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <!-- Your existing nav items unchanged -->
-                    <li class="nav-item"><a class="nav-link smooth-nav" href="/home/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-nav" href="/home#courses">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-nav" href="/about/">About</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle smooth-nav" href="#" id="galleryDropdown" role="button" data-bs-toggle="dropdown">
-                            Gallery
-                        </a>
-                        <ul class="dropdown-menu glass-dropdown shadow-lg">
-                            <li><a class="dropdown-item" href="/image_view/">All Gallery</a></li>
-                            <li><a class="dropdown-item" href="#">Photos</a></li>
-                            <li><a class="dropdown-item" href="#">Videos</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link smooth-nav" href="/home#testimonial-section">Testimonial</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-nav" href="/home#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link smooth-nav" href="/login/" target="_blank" rel="noopener noreferrer">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+def Enquiry_View(request):
+    details = Messages.objects.all()
+    return render(request, 'dashboard/enquiry_list.html', {'data': details})
 
-            
-           
 
-   <section class="hero" style="position: relative; overflow: hidden;">
-    <div class="container">
-        <div class="hero-content">
-            <h1>Academy Memories Gallery</h1>
-            <p class="hero-lead">Relive the moments that shaped our community. From graduations to workshops, explore thousands of captured memories.</p>
-        </div>
-    </div>
+def course_details(request):
+
+    # ================= ADD COURSE =================
+    if request.method == "POST" and 'add_course' in request.POST:
+        Course.objects.create(
+            course_name=request.POST.get('course_name'),
+            description=request.POST.get('description'),
+            duration=float(request.POST.get('duration') or 0),
+            pro_duration=float(request.POST.get('pro_duration') or 0),
+            total_duration=float(request.POST.get('total_duration') or 0),
+            price=request.POST.get('price'),
+            discount_price=request.POST.get('discount_price') or None,
+            image=request.FILES.get('image')
+        )
+        return redirect('course_details')
+
+    # ================= UPDATE COURSE =================
+    if request.method == "POST" and 'update_course' in request.POST:
+        course = get_object_or_404(Course, id=request.POST.get('id'))
+
+        course.course_name = request.POST.get('course_name')
+        course.description = request.POST.get('description')
+        course.duration = float(request.POST.get('duration') or 0)
+        course.pro_duration = float(request.POST.get('pro_duration') or 0)
+        course.total_duration = float(request.POST.get('total_duration') or 0)
+        course.price = request.POST.get('price')
+        course.discount_price = request.POST.get('discount_price') or None
+
+        if request.FILES.get('image'):
+            course.image = request.FILES.get('image')
+
+        course.save()
+        return redirect('course_details')
+
+    # ================= DELETE COURSE =================
+    if request.method == "POST" and 'delete_course' in request.POST:
+        course = get_object_or_404(Course, id=request.POST.get('id'))
+        course.delete()
+        return redirect('course_details')
+
+    # ================= CONTEXT =================
+    courses = Course.objects.all().order_by('-id')
+    total_courses = courses.count()
+    total_price = sum(course.price for course in courses)
+
+    context = {
+        'courses': courses,
+        'total_courses': total_courses,
+        'total_price': total_price,
+    }
+
+    return render(request, 'dashboard/course_details.html', context)
+
+#=================Student=========================
+
+def student_details(request):
+
+    # 🔐 Security Check
+    if request.session.get("user_type") != "student":
+        return redirect("login")
+
+    stu_id = request.session.get("stu_id")
+
+    try:
+        # ================= PROFILE =================
+        student = admission.objects.get(stu_id=stu_id)
+
+        # ================= TOTAL STUDENTS =================
+        total_students = admission.objects.count()
+
+        # ================= COURSE =================
+        course = Course.objects.filter(course_name=student.course).first()
+
+        # ================= CERTIFICATES =================
+        certificates = Certificate.objects.filter(stu_id=stu_id)
+
+        # ================= CLASS NOTES =================
+        notes = ClassNote.objects.filter(department=student.course)
+
+        # ================= SYLLABUS =================
+        syllabus = Syllabus.objects.filter(course=student.course)
+
+    except admission.DoesNotExist:
+        return redirect("login")
+
+    context = {
+        "student": student,
+        "course": course,
+        "certificates": certificates,
+        "notes": notes,
+        "syllabus_details": syllabus,
+        "total_students": total_students
+    }
+
+    return render(request, "student_details.html", context)
+#============================
+
+
+def student_enroll(request):
+
+    # 📧 SEND CREDENTIALS
+    if request.method == "POST" and "send_credentials" in request.POST:
+        student_id = request.POST.get("student_id")
+
+        student = get_object_or_404(admission, id=student_id)
+
+        subject = "Aerovant Academy - Student Account Created"
+
+        message = f"""
+Hello {student.full_name},
+
+Welcome to Aerovant Academy.
+
+Your student account has been successfully created.
+
+Login Details
+------------------------
+Login URL : http://127.0.0.1:8000/student_login/
+Username  : {student.email}
+Password  : {student.stu_id}
+
+For security reasons, please change your password after logging in.
+
+If you face any issues, please contact the administrator.
+
+Best Regards,
+Aerovant Academy
+Admin Team
+"""
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [student.email],
+            fail_silently=False,
+        )
+
+        student.credentials_sent = True
+        student.save()
+
+        messages.success(request, "Student credentials sent successfully.")
+        return redirect("student_Enroll")
+
+
+    # 🔍 SEARCH
+    query = request.GET.get("q", "")
+    students = admission.objects.all().order_by("-created_at")
+
+    if query:
+        students = students.filter(
+            Q(full_name__icontains=query) |
+            Q(phone__icontains=query) |
+            Q(email__icontains=query) |
+            Q(course__icontains=query)
+        )
+
+    # 📄 PAGINATION
+    paginator = Paginator(students, 10)
+    page_number = request.GET.get("page")
+    students = paginator.get_page(page_number)
+
+    context = {
+        "students": students,
+        "query": query
+    }
+
+    return render(request, "dashboard/students_Enroll.html", context)
+
+
+def student_create(request):
+
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+
+        # Check email already exists
+        if admission.objects.filter(email=email).exists():
+
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({
+                    "status": "error",
+                    "message": "This email is already registered."
+                })
+
+            messages.error(request, "⚠️ This email is already registered.")
+            return redirect("home")
+
+        # Save admission
+        new_student = admission.objects.create(
+            full_name=request.POST.get("full_name"),
+            phone=request.POST.get("phone"),
+            whatsapp=request.POST.get("whatsapp"),
+            email=email,
+            mode=request.POST.get("mode"),
+            graduation_year=request.POST.get("graduation_year"),
+            course=request.POST.get("course"),
+            message=request.POST.get("message")
+        )
+
+        # 📢 Send Notification Email to Admin
+        send_mail(
+            subject="🚀 New Student Registration",
+            message=f"""
+A new student has registered.
+
+Name: {new_student.full_name}
+Email: {new_student.email}
+Phone: {new_student.phone}
+Course: {new_student.course}
+Mode: {new_student.mode}
+
+
+Message:
+{new_student.message}
+""",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=["humanresource@aerovanttech.com"],  # change to admin email
+            fail_silently=True,
+        )
+
+        # AJAX response
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"status": "success"})
+
+        messages.success(request, "✅ Registration submitted successfully!")
+        return redirect("home")
+
+    return redirect("home")
+
+def check_email(request):
+
+    email = request.GET.get("email")
+
+    if admission.objects.filter(email=email).exists():
+        return JsonResponse({"status": "exists"})
+    else:
+        return JsonResponse({"status": "available"})
     
-    <!-- Four Smiling Image Movers -->
-   
-    <div class="smiley-movers">
-        <img src="{% static 'images/stud.jpg' %}" class="mover">
-        <img src="{% static 'images/stude.jpg' %}" class="mover">
-        <img src="{% static 'images/studen.jpg' %}" class="mover">
-        <img src="{% static 'images/student.jpg' %}" class="mover">
+def view_stu(request, id):
+    students = admission.objects.all()
+    total_stu = students.count()
 
-        <!-- duplicate for seamless loop -->
-        <img src="{% static 'images/stud.jpg' %}" class="mover">
-        <img src="{% static 'images/stude.jpg' %}" class="mover">
-        <img src="{% static 'images/studen.jpg' %}" class="mover">
-        <img src="{% static 'images/student.jpg' %}" class="mover">
-    </div>
+    context = {
+        'students': students,
+        'total_stu': total_stu
+    }
 
-</section>
+    return render(request, 'dashboard/students_Enroll.html', context)
+
+def student_edit(request, id):
+    student = get_object_or_404(admission, id=id)
+
+    if request.method == "POST":
+        student.full_name = request.POST.get("full_name")
+        student.phone = request.POST.get("phone")
+        student.whatsapp = request.POST.get("whatsapp")
+        student.email = request.POST.get("email")
+        student.mode = request.POST.get("mode")
+        student.graduation_year = request.POST.get("graduation_year")
+        student.course = request.POST.get("course")
+        student.message = request.POST.get("message")
+        student.save()
+
+        return redirect("student_Enroll")
+
+    return render(request, "dashboard/students_Enroll.html", {"student": student})
+
+
+def student_delete(request, id):
+    student = get_object_or_404(admission, id=id)
+    student.delete()
+    return redirect("student_Enroll")
+
+def export_students(request):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="students.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        "ID", "Student ID", "Full Name", "Phone",
+        "WhatsApp", "Email", "Mode",
+        "Graduation Year", "Course", "Created Date"
+    ])
+
+    students = admission.objects.all()
+
+    for student in students:
+        writer.writerow([
+            student.id,
+            student.stu_id,
+            student.full_name,
+            student.phone,
+            student.whatsapp,
+            student.email,
+            student.mode,
+            student.graduation_year,
+            student.course,
+            student.created_at
+        ])
+
+    return response
+
+
+
+#======================Upload nots=========================
+
+def admission_management(request):
+    return render(request,"dashboard/admission_management.html")
+
+
+def site_settings(request):
+    return render(request,"dashboard/settings.html")
+
+
+
+#--------------Admission_details---------------
+
+#------------Gallery_upload---------------------
+
+def gallery_upload(request):
+
+    if request.method == "POST":
+
+        # ADD NEW GALLERY
+        if "add_gallery" in request.POST:
+            title = request.POST.get("title")
+            category = request.POST.get("category")
+            media_type = request.POST.get("media_type")
+            description = request.POST.get("description", "")
+
+            media_files = request.FILES.getlist("media_files")
+
+            for media_file in media_files:
+                Gallery.objects.create(
+                    title=title,
+                    category=category,
+                    media_type=media_type,
+                    description=description,
+                    image=media_file if media_type == "image" else None,
+                    video=media_file if media_type == "video" else None,
+                )
+
+        # UPDATE
+        elif "update_gallery" in request.POST:
+            gallery_id = request.POST.get("id")
+            gallery = get_object_or_404(Gallery, id=gallery_id)
+
+            gallery.title = request.POST.get("title")
+            gallery.category = request.POST.get("category")
+            gallery.media_type = request.POST.get("media_type")
+            gallery.description = request.POST.get("description", "")
+
+            media_files = request.FILES.getlist("media_files")
+
+            if media_files:
+                media_file = media_files[0]
+
+                if gallery.media_type == "image":
+                    gallery.image = media_file
+                    gallery.video = None
+                else:
+                    gallery.video = media_file
+                    gallery.image = None
+
+            gallery.save()
+
+        # DELETE
+        elif "delete_gallery" in request.POST:
+            gallery_id = request.POST.get("id")
+            gallery = get_object_or_404(Gallery, id=gallery_id)
+            gallery.delete()
+
+        # BULK DELETE
+        elif "bulk_delete" in request.POST:
+            ids = request.POST.getlist("gallery_ids")
+            Gallery.objects.filter(id__in=ids).delete()
+
+        return redirect("gallery_upload")
+
+    gallery = Gallery.objects.all().order_by("-id")
+    images = Gallery.objects.filter(media_type="image").order_by("-id")
+    videos = Gallery.objects.filter(media_type="video").order_by("-id")
+
+    return render(request, "dashboard/gallery_upload.html", {
+        "gallery": gallery,
+        "images": images,
+        "videos": videos
+    })
+    
+# def gallery_view(request):
+#     gallery = Gallery.objects.all().order_by('-created_at')
+    
+#     return render(request, 'gallery_upload.html', {'gallery': gallery})
+
+def gallery_view(request):
+    gallery = Gallery.objects.all().order_by('-id')
+    
+    return render(request, 'gallery_upload.html', {'gallery': gallery})
+
+
+def image_view(request):
+
+    gallery = Gallery.objects.all().order_by("-id")
+
+    images = Gallery.objects.filter(media_type="image")
+    videos = Gallery.objects.filter(media_type="video")
+
+    total_galleries = gallery.count()
+    total_images = images.count()
+
+    categories = Gallery.objects.values_list('category', flat=True).distinct()
+
+    context = {
+        'gallery': gallery,
+        'images': images,
+        'videos': videos,
+        'total_galleries': total_galleries,
+        'total_images': total_images,
+        'categories': categories,
+    }
+
+    return render(request, 'image_view.html', context)
+
+    
+def download_note(request, note_id):
+
+    if request.session.get("user_type") != "staff":
+        return redirect("login")
+
+    note = get_object_or_404(ClassNote, id=note_id)
+    file_path = os.path.join(settings.MEDIA_ROOT, note.file.name)
+
+    if os.path.exists(file_path):
+        return FileResponse(
+            open(file_path, 'rb'),
+            content_type='application/octet-stream',
+            as_attachment=True,
+            filename=note.file.name.split('/')[-1]
+        )
+    else:
+        messages.error(request, 'File not found.')
+        return redirect('upload_notes_staff')
+    
+#================ Certificate function =================== 
+
+def certification_management(request):
+    # Stats calculation
+    total = Certificate.objects.count()
+    issued = Certificate.objects.filter(status='issued').count()
+    verified = Certificate.objects.filter(status='verified').count()
+    pending = Certificate.objects.filter(status='pending').count()
+    expired = Certificate.objects.filter(
+        status='issued', 
+        expiry_date__lt=timezone.now().date()
+    ).count()
+    
+    # Search and filter
+    query = request.GET.get("q", "")
+    status_filter = request.GET.get("status", "all")
+    
+    certificates = Certificate.objects.all()
+    
+    if query:
+        certificates = certificates.filter(
+            Q(student_name__icontains=query) |
+            Q(certified_course__icontains=query) |
+            Q(stu_id__icontains=query) |
+            Q(cert_id__icontains=query)
+        )
+    
+    if status_filter != 'all':
+        certificates = certificates.filter(status=status_filter)
+    
+    context = {
+        'total_certificates': Certificate.objects.count(),
+        'issued_certificates': Certificate.objects.filter(status='issued').count(),
+        'verified_certificates': Certificate.objects.filter(status='verified').count(),
+        'pending_certificates': pending,  # <-- Pending count
+        'expired_certificates': Certificate.objects.filter(
+            status='issued',
+            expiry_date__lt=timezone.now().date()
+        ).count(),
+        'certificates': certificates[:10],
+}
+    return render(request, 'dashboard/certification_management.html', context)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def upload_certificate(request):
+    try:
+        # Direct POST/FILES extraction
+        stu_id = request.POST.get('stu_id', '').strip().upper()
+        student_name = request.POST.get('student_name', '').strip()
+        certified_course = request.POST.get('certified_course', '').strip()
+        batch = request.POST.get('batch', '').strip()
+        issued_date_str = request.POST.get('issued_date', '')
+        certificate_file = request.FILES.get('certificate_file')
+        
+        # Validation
+        if not all([stu_id, student_name, certified_course, batch, issued_date_str, certificate_file]):
+            return JsonResponse({
+                'success': False,
+                'error': 'All fields are required!'
+            }, status=400)
+        
+        # Check duplicate stu_id
+        if Certificate.objects.filter(stu_id=stu_id).exists():
+            return JsonResponse({
+                'success': False,
+                'error': f'Certificate for Student ID {stu_id} already exists!'
+            }, status=400)
+        
+        # File size check (5MB)
+        if certificate_file.size > 5 * 1024 * 1024:
+            return JsonResponse({
+                'success': False,
+                'error': 'File size must be less than 5MB!'
+            }, status=400)
+        
+        # Parse date
+       
+        issued_date = datetime.strptime(issued_date_str, '%Y-%m-%d').date()
+        
+        # Create certificate
+        certificate = Certificate.objects.create(
+            stu_id=stu_id,
+            student_name=student_name,
+            certified_course=certified_course,
+            batch=batch,
+            issued_date=issued_date,
+            certificate_file=certificate_file
+        )
+        total = Certificate.objects.count()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Certificate uploaded successfully!',
+            'cert_id': certificate.cert_id,
+            'stu_id': certificate.stu_id,
+            'total_certificates': total,
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Upload failed: {str(e)}'
+        }, status=500)
+
+def verify_certificate(request, cert_id):
+    certificate = get_object_or_404(Certificate, cert_id=cert_id)
+
+    if certificate.status == 'pending':
+        certificate.status = 'issued'
+        certificate.verified_at = timezone.now()
+        certificate.save()
+
+    messages.success(request, f'Certificate {cert_id} verified!')
+
+    return redirect('certification_management')
+
+def download_certificate(request, cert_id):
+    certificate = Certificate.objects.get(cert_id=cert_id)
+    response = FileResponse(
+        certificate.certificate_file.open(),
+        as_attachment=True,
+        filename=f"{certificate.cert_id}.pdf"
+    )
+    return response
+
+# Bulk export CSV
+def export_csv(request):
   
- 
-<!-- Gallery Section -->
-<section class="gallery-section">
-    <div class="container">
-        <h2 class="text-center mb-5"
-            style="font-size: 3rem; font-weight: 800; color: var(--text-primary);">
-            Our Memories
-        </h2>
-
-        <div class="row g-4">
-
-{% for img in gallery %}
-<div class="col-lg-4 col-md-6">
-
-    <div class="gallery-card position-relative h-100"
-         onclick="openGalleryModal('{{ img.id }}')">
-
-        <!-- IMAGE -->
-        <!-- {% if img.media_type == "image" and img.image %}
-        <img src="{{ img.image.url }}"
-             class="gallery-img"
-             alt="{{ img.title }}"
-             loading="lazy">
-        {% endif %} -->
-
-
-        <!-- VIDEO -->
-        <!-- {% if img.media_type == "video" and img.video %}
-        <video class="gallery-img" muted preload="metadata">
-            <source src="{{ img.video.url }}" type="video/mp4">
-        </video>
-        {% endif %} -->
-
-        {% if img.media_type == "image" %}
-            {% if img.image %}
-                <img src="{{ img.image.url }}"
-                    class="gallery-img"
-                    alt="{{ img.title }}"
-                    loading="lazy">
-            {% endif %}
-
-        {% endif %}
-
-        {% if img.media_type == "video" %}
-            {% if img.video %}
-                <video class="gallery-img" muted preload="metadata">
-                    <source src="{{ img.video.url }}" type="video/mp4">
-                </video>
-            {% endif %}
-        {% endif %}
-
-        <div class="gallery-overlay">
-
-            <h4 class="gallery-title mb-2">
-                {{ img.title|truncatechars:40 }}
-            </h4>
-
-            <div class="d-flex justify-content-between align-items-center">
-
-                <span class="badge bg-primary px-3 py-2">
-                    <!-- {{ img.get_category_display }} -->
-                    {{ img.category }}
-                </span>
-
-                <small>{{ img.created_at|date:"M d, Y" }}</small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-{% empty %}
-
-<div class="col-12 text-center py-5">
-    <i class="fas fa-images fa-5x text-muted mb-4"></i>
-    <h3 class="text-muted">No Media Yet</h3>
-    <p class="lead text-muted">Academy memories will appear here soon!</p>
-</div>
-
-{% endfor %}
-
-</div>
-</section>
-
-<!-- Gallery Modal (add this after the section for lightbox functionality) -->
-<div class="modal fade" id="galleryModal" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-header border-0">
-                <h5 class="modal-title" id="modalTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body text-center p-0">
-                <div id="modalMedia"></div>
-                <p class="mt-3 mb-0" id="modalImageCount">
-                    <i class="fas fa-images me-2"></i><span>1 photo</span>
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <!-- Gallery Modal -->
-    <!-- <div id="galleryModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-badge" id="modalCategory"></span>
-                <h2 class="modal-title" id="modalTitle"></h2>
-                <span class="close" onclick="closeGalleryModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="row mb-4">
-                    <div class="col-md-8">
-                        <img id="modalMainImage" src="" class="img-fluid rounded shadow" style="max-height: 500px; object-fit: cover; width: 100%;">
-                    </div>
-                    <div class="col-md-4">
-                        <h6>More Photos:</h6>
-                        <div id="modalGalleryThumbs" class="modal-gallery"></div>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <p class="lead mb-1" id="modalDescription"></p>
-                    <p class="text-muted mb-0">
-                        <i class="fas fa-calendar me-2"></i><span id="modalDate"></span> • 
-                        <i class="fas fa-images me-2"></i><span id="modalImageCount"></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-   <!-- COURSE DETAILS MODALS (Updated with consistent styling) -->
-
-<!-- Python Full Stack Modal -->
-<div id="pythonModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-badge">Curriculum Details</span>
-            <h2 class=" text-white">Python Full Stack Development</h2>
-            <span class="close" onclick="closeCourseModal('python')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="{% static 'images/FSD.jpg' %}" alt="Full Stack Development" 
-                         class="img-fluid rounded shadow" style="height: 300px; object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <h5><i class="fas fa-check-circle text-success me-2"></i>Technologies Covered:</h5>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Frontend:</strong> HTML5, CSS3, JavaScript, React.js, Bootstrap 5
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Backend:</strong> Python 3.11, Django 5.0, Flask, REST APIs
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Database:</strong> MySQL
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Tools:</strong> Git, GitHub
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-top">
-                <h5>Course Modules:</h5>
-                <div class="row text-center">
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-code fa-2x text-primary mb-2"></i>
-                            <div class="text-black">Python Core</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fab fa-react fa-2x text-info mb-2"></i>
-                            <div class="text-black">Frontend Dev</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-database fa-2x text-secondary mb-2"></i>
-                            <div class="text-black">Databases</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-project-diagram fa-2x text-black mb-2"></i>
-                            <div class="text-black">Live Projects</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4"></div>
-        </div>
-    </div>
-</div>
-
-<!-- Cloud Security Modal -->
-<div id="cloudModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-badge">Curriculum Details</span>
-            <h2 class="modal-title">Cloud Security Engineering</h2>
-            <span class="close" onclick="closeCourseModal('cloud')">&times;</span>
-            
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="{% static 'images/secure-cloud.jpg' %}" alt="Cloud Security" 
-                         class="img-fluid rounded shadow" style="height: 300px; object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <h5><i class="fas fa-check-circle text-success me-2"></i>Technologies Covered:</h5>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Cloud:</strong> AWS, Azure, Google Cloud Platform
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Security:</strong> IAM, VPC, Security Groups, WAF
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Hacking:</strong> Ethical Hacking, Penetration Testing
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-circle text-primary me-2"></i>
-                            <strong>Tools:</strong> Wireshark, Nmap, Metasploit, Burp Suite
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-top">
-                <h5>Course Modules:</h5>
-                <div class="row text-center">
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fab fa-aws fa-2x text-warning mb-2"></i>
-                            <div class="text-black">AWS Core</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-shield-alt fa-2x text-danger mb-2"></i>
-                            <div class="text-black">Security</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-terminal fa-2x text-dark mb-2"></i>
-                            <div class="text-black">Ethical Hacking</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-certificate fa-2x text-success mb-2"></i>
-                            <div class="text-black">Cert Prep</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-4"></div>
-        </div>
-    </div>
-</div>
-
-<!-- AI Modal -->
-<div id="aiModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-badge">Curriculum Details</span>
-            <h2 class="modal-title">Artificial Intelligence</h2>
-            <span class="close" onclick="closeCourseModal('ai')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="{% static 'images/AI3.jpg' %}" alt="AI" class="img-fluid rounded shadow" style="height: 300px; object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <h5><i class="fas fa-check-circle text-success me-2"></i>Technologies Covered:</h5>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Core AI:</strong> Machine Learning, Deep Learning</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Frameworks:</strong> TensorFlow, PyTorch, Scikit-learn</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Specialized:</strong> NLP, Computer Vision</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Deployment:</strong> Docker, AWS SageMaker</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Data Analysis Modal -->
-<div id="dataModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-badge">Curriculum Details</span>
-            <h2 class="modal-title">Data Analysis</h2>
-            <span class="close" onclick="closeCourseModal('data')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="{% static 'images/DA2.jpg' %}" alt="Data Analysis" class="img-fluid rounded shadow" style="height: 300px; object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <h5><i class="fas fa-check-circle text-success me-2"></i>Technologies Covered:</h5>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Python:</strong> Pandas, NumPy, Matplotlib</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Database:</strong> SQL, PostgreSQL</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Visualization:</strong> Power BI, Tableau</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Advanced:</strong> Statistics, Data Cleaning</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Software Testing Modal -->
-<div id="testingModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-badge">Curriculum Details</span>
-            <h2 class="modal-title">Software Testing</h2>
-            <span class="close" onclick="closeCourseModal('testing')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="{% static 'images/ST2.jpg' %}" alt="Software Testing" class="img-fluid rounded shadow" style="height: 300px; object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <h5><i class="fas fa-check-circle text-success me-2"></i>Technologies Covered:</h5>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Manual:</strong> Test Cases, Bug Reporting</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Automation:</strong> Selenium, Appium</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>API:</strong> Postman, REST Assured</li>
-                        <li class="mb-2"><i class="fas fa-circle text-primary me-2"></i><strong>Process:</strong> Agile, STLC, ISTQB</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
- <!-- ========== FOOTER ========== -->
-  <footer class="aero-footer">
-
-    <!-- TOP BRAND SECTION -->
-    <div class="footer-top text-center">
-        <h2 class="footer-title">Aerovant Academy – Code Transform & Succeed</h2>
-        <p class="footer-subtitle text-white ">
-            Empowering Tomorrow’s Tech Leaders with Cutting-Edge IT Education and Strong Placement Support
-        </p>
-
-        <div class="social-icons">
-                <a href="https://www.instagram.com/aerovant_technologies" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/profile.php?id=61587139213075" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.linkedin.com/in/aerovant-technologies-7a72bb3aa" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://youtube.com/@aerovanttechnologies" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://x.com/aerovant_tech" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="https://github.com/AerovantTechnologies" target="_blank"><i class="fab fa-github"></i></a>
-            </div>
-    </div>
-<!-- MAIN FOOTER LINKS -->
-    <div class="footer-main container">
-        <div class="row">
-
-            <!-- Company -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="fw-bold ">Aerovant Academy</h5>
-                <p class="text-justify">AEROVANT ACADEMY
-                P. No. 34, <br>Radha Rayan Radiance, 
-                D. No 1/148/22, Rayakottai Rd, Indl. Estate, 
-                Wahab Nagar, <br>
-                Krishnagiri-635002, Tamil Nadu</p>
-            </div>
-
-            <!-- Explore -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h6 class="fw-bold">Explore</h6>
-                <ul>
-                   <li><a href="#" onclick="openCourseModal('python')" class="text-white">Full Stack Development</a></li>
-                    <li><a href="#" onclick="openCourseModal('cloud')" class="text-white">Cloud Security</a></li>
-                    <li><a href="#" onclick="openCourseModal('data')" class="text-white">Data Analysis</a></li>
-                    <li><a href="#" onclick="openCourseModal('ai')" class="text-white">Artificial Intelligence</a></li>
-                    <li><a href="#" onclick="openCourseModal('testing')" class="text-white">Software Testing</a></li>
-                    <li><a href="http://aerovanttech.com/" target="_blank" >Aerovant Technologies</a></li>
-                </ul>
-            </div>
-
-            <!-- Company Links -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h6 class="fw-bold">Company</h6>
-                <ul>
-                    <li><a href="/about/" class="text-white">About Us</a></li>
-                    <li><a href="/home#contact" class="text-white">Contact Us</a></li>
-                    
-                </ul>
-            </div>
-
-            <!-- Legal -->
-            
-
-<div class="col-lg-3 col-md-6 mb-4">
-    <h6 class="fw-bold">Legal</h6>
-    <ul>
-
-        <li>
-            Terms & Conditions
-            <br>
-
-            <a href="{% static 'pdf/Terms _&_Conditions.pdf' %}" target="_blank"  class="text-white">
-                Open
-            </a>
-
-            |
-
-            <a href="{% static 'pdf/Terms _&_Conditions.pdf' %}" download  class="text-white">
-                Download
-            </a>
-        </li>
-
-        <li>
-            Privacy Policy
-            <br>
-
-            <a href="{% static 'pdf/Privacy_Policy.pdf' %}" target="_blank"  class="text-white">
-                Open
-            </a>
-
-            |
-
-            <a href="{% static 'pdf/Privacy_Policy.pdf' %}" download  class="text-white">
-                Download
-            </a>
-        </li>
-
-        <li>
-            Refund Policy
-            <br>
-
-            <a href="{% static 'pdf/Refund_Policy.pdf' %}" target="_blank"  class="text-white">
-                Open
-            </a>
-
-            |
-
-            <a href="{% static 'pdf/Refund_Policy.pdf' %}" download  class="text-white">
-                Download
-            </a>
-        </li>
-
-    </ul>
-</div>
-
-        </div>
-    </div>
-
-    <!-- BOTTOM STRIP -->
-    <div class="footer-bottom">
-        <div class="container d-flex justify-content-between align-items-center flex-wrap">
-
-            <div class="text-black">
-                📞 +91 90426 47714
-            </div>
-
-            <div class="text-black">
-                ✉ humanresource@aerovanttech.com
-
-            </div>
-
-            <a href="/home#contact" class="demo-btn text-black">Register for Demo</a>
-
-        </div>
-    </div>
-
-
-</footer>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let currentGalleryImages = [];
-
-        function openGalleryModal(galleryId, imageId) {
-            // Fetch gallery data via AJAX or pre-load
-            const modal = document.getElementById('galleryModal');
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeGalleryModal() {
-            const modal = document.getElementById('galleryModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', e => {
-                e.preventDefault();
-                document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // Close modal on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('galleryModal');
-            if (event.target === modal) closeGalleryModal();
-        }
-function openCourseModal(course) {
-    document.getElementById(course + "Modal").style.display = "block";
-}
-
-function closeCourseModal(course) {
-    document.getElementById(course + "Modal").style.display = "none";
-}
- 
-    </script>
-</body>
-</html>
-
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="certificates.csv"'
+    
+    writer = csv.writer(response)
+    writer.writerow(['Cert ID', 'Student ID', 'Name', 'Course', 'Batch', 'Issued', 'Status'])
+    
+    certificates = Certificate.objects.all()
+    for cert in certificates:
+        writer.writerow([
+            cert.cert_id,
+            cert.stu_id,
+            cert.student_name,
+            cert.certified_course,
+            cert.batch,
+            cert.issued_date,
+            cert.status
+        ])
+        
+    
+    return response   
+
+@require_POST
+def bulk_update_certificates(request):
+    try:
+        data = json.loads(request.body)
+        cert_ids = data.get('cert_ids', [])
+        action = data.get('action', '').lower()
+
+        if not cert_ids or not action:
+            return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+        updated_count = Certificate.objects.filter(cert_id__in=cert_ids).update(status=action)
+
+        return JsonResponse({
+            'success': True,
+            'message': f'{updated_count} certificate(s) updated to {action.upper()}'
+        })
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+    
+# views.py
+
+
+#================== Upload photo ====================
+@require_http_methods(["POST"])
+def upload_profile_photo(request):
+    try:
+        stu_id = request.POST.get('stu_id')
+        profile_image = request.FILES.get('profile_image')
+        
+        if not stu_id or not profile_image:
+            return JsonResponse({'success': False, 'error': 'Student ID and image required'}, status=400)
+        
+        student = admission.objects.get(id=stu_id)
+        
+        # Validate image
+        if profile_image.size > 2 * 1024 * 1024:  # 2MB
+            return JsonResponse({'success': False, 'error': 'Image too large (max 2MB)'}, status=400)
+        
+        # Resize image (optional)
+        img = Image.open(profile_image)
+        if img.mode in ('RGBA', 'P'):
+            img = img.convert('RGB')
+        img.thumbnail((300, 300))  # Max 300x300
+        
+        # Save
+        profile_image.seek(0)  # Reset file pointer
+        student.profile_image = profile_image
+        student.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Profile photo updated!',
+            'image_url': student.profile_image.url
+        })
+        
+    except admission.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Student not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    
