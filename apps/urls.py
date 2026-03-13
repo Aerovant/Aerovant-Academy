@@ -1,7 +1,6 @@
 from django.urls import path
+from django.shortcuts import render
 from . import views
-import render
-from django.urls import path
 
 urlpatterns = [
     #===============User urls=====================
@@ -79,8 +78,6 @@ urlpatterns = [
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path("export_staff/", views.export_staff, name="export_staff"),
     path('staff_register/', views.staff_register, name='staff_register')
-]  
 
-    
-    
+]  
 
