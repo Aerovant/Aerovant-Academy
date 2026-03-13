@@ -476,12 +476,14 @@
     </div>
     
     <!-- Four Smiling Image Movers -->
+   
     <div class="smiley-movers">
-        <img src="{{% static 'images/stud.jpg' %}}" class="mover mover1" alt="Smiling student">
+        <img src="{% static 'images/stud.jpg' %}" class="mover mover1" alt="Smiling student">
         <img src="{% static 'images/stude.jpg' %}" class="mover mover2" alt="Smiling graduate">
         <img src="{% static 'images/studen.jpg' %}" class="mover mover3" alt="Smiling group">
         <img src="{% static 'images/student.jpg' %}" class="mover mover4" alt="Smiling workshop">
     </div>
+
 </section>
   
  
@@ -502,18 +504,37 @@
          onclick="openGalleryModal('{{ img.id }}')">
 
         <!-- IMAGE -->
-        {% if img.media_type == "image" and img.image %}
+        <!-- {% if img.media_type == "image" and img.image %}
         <img src="{{ img.image.url }}"
              class="gallery-img"
              alt="{{ img.title }}"
              loading="lazy">
-        {% endif %}
+        {% endif %} -->
+
 
         <!-- VIDEO -->
-        {% if img.media_type == "video" and img.video %}
+        <!-- {% if img.media_type == "video" and img.video %}
         <video class="gallery-img" muted preload="metadata">
             <source src="{{ img.video.url }}" type="video/mp4">
         </video>
+        {% endif %} -->
+
+        {% if img.media_type == "image" %}
+            {% if img.image %}
+                <img src="{{ img.image.url }}"
+                    class="gallery-img"
+                    alt="{{ img.title }}"
+                    loading="lazy">
+            {% endif %}
+
+        {% endif %}
+
+        {% if img.media_type == "video" %}
+            {% if img.video %}
+                <video class="gallery-img" muted preload="metadata">
+                    <source src="{{ img.video.url }}" type="video/mp4">
+                </video>
+            {% endif %}
         {% endif %}
 
         <div class="gallery-overlay">
@@ -525,7 +546,8 @@
             <div class="d-flex justify-content-between align-items-center">
 
                 <span class="badge bg-primary px-3 py-2">
-                    {{ img.get_category_display }}
+                    <!-- {{ img.get_category_display }} -->
+                    {{ img.category }}
                 </span>
 
                 <small>{{ img.created_at|date:"M d, Y" }}</small>
@@ -569,9 +591,8 @@
     </div>
 </div>
 
-</section>
     <!-- Gallery Modal -->
-    <div id="galleryModal" class="modal">
+    <!-- <div id="galleryModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="modal-badge" id="modalCategory"></span>
@@ -597,7 +618,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
    <!-- COURSE DETAILS MODALS (Updated with consistent styling) -->
 
@@ -920,13 +941,13 @@
             Refund Policy
             <br>
 
-            <a href="{% static 'pdf/Refund_Policy.pdf.pdf' %}" target="_blank"  class="text-white">
+            <a href="{% static 'pdf/Refund_Policy.pdf' %}" target="_blank"  class="text-white">
                 Open
             </a>
 
             |
 
-            <a href="{% static 'pdf/Refund_Policy.pdf.pdf' %}" download  class="text-white">
+            <a href="{% static 'pdf/Refund_Policy.pdf' %}" download  class="text-white">
                 Download
             </a>
         </li>
