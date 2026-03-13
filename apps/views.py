@@ -1,24 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from .models import Messages, Course, Gallery ,Certificate,Syllabus,Attendance
-from django.contrib import messages
+from .models import Messages, Course, Gallery, Certificate, Syllabus, Attendance, Staff, ClassNote, admission
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.conf import settings
-from .models import Gallery, GalleryImage,admission
-import re,os
+import re, os
 from django.utils import timezone
-from .models import Staff
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 import logging
-from django.conf import settings 
 from django.core.mail import send_mail
-from .models import ClassNote
-from django.http import FileResponse
 from django.core.paginator import Paginator
 import csv
 from django.db.models import Q
@@ -109,9 +102,7 @@ def login_view(request):
 
     return render(request, "login.html")
 
-
-# ================= STUDENT DASHBOARD =================
-@no_cache
+@never_cache
 def student_dashboard(request):
 
     if request.session.get("user_type") != "student":
@@ -119,14 +110,13 @@ def student_dashboard(request):
 
     stu_id = request.session.get("stu_id")
 
-    student = get_object_or_404(admission, stu_id=stu_id)
+    certificates = Certificate.objects.filter(stu_id=stu_id)
 
     context = {
-        "student": student
+        "certificates": certificates
     }
 
-    return render(request, "student_details.html", context)
-
+    return render(request, "student_dashboard.html", context)
 
 # ================= STAFF DASHBOARD =================
 @no_cache
@@ -730,15 +720,6 @@ def student_details(request):
     return render(request, "student_details.html", context)
 #============================
 
-def student_dashboard(request):
-    stu_id = request.session.get('stu_id')   # logged student id
-    
-    certificates = Certificate.objects.filter(stu_id=stu_id)
-
-    context = {
-        'certificates': certificates
-    }
-    return render(request, 'student_dashboard.html', context)
 
 def student_enroll(request):
 
@@ -881,7 +862,7 @@ def check_email(request):
     else:
         return JsonResponse({"status": "available"})
     
-def view_stu(request):
+def view_stu(request, id):
     students = admission.objects.all()
     total_stu = students.count()
 
@@ -1067,11 +1048,14 @@ def image_view(request):
     return render(request, 'image_view.html', context)
 
     
-@login_required
 def download_note(request, note_id):
-    note = get_object_or_404(ClassNote, id=note_id, uploaded_by=request.user)
+
+    if request.session.get("user_type") != "staff":
+        return redirect("login")
+
+    note = get_object_or_404(ClassNote, id=note_id)
     file_path = os.path.join(settings.MEDIA_ROOT, note.file.name)
-    
+
     if os.path.exists(file_path):
         return FileResponse(
             open(file_path, 'rb'),
@@ -1081,7 +1065,7 @@ def download_note(request, note_id):
         )
     else:
         messages.error(request, 'File not found.')
-        return redirect('upload_notes')
+        return redirect('upload_notes_staff')
     
 #================ Certificate function =================== 
 
