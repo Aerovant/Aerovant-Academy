@@ -90,12 +90,9 @@ WSGI_APPLICATION = 'Aerovant_Academic.wsgi.application'
 #         'PASSWORD':'',
 #     }
 # }
-
+DATABASE_URL = postgresql://aerovant_db_user:kSK9ceZ78zCN6yQvhk2mbuSGbyZu3ZjB@dpg-d6pudjh4tr6s73a0uncg-a.singapore-postgres.render.com/aerovant_db
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+       'default': dj_database_url.config(default=os.environ.get("DATABASE_URL"))
 }
 
 
