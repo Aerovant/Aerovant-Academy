@@ -1032,10 +1032,16 @@ def gallery_upload(request):
         "videos": videos
     })
     
+# def gallery_view(request):
+#     gallery = Gallery.objects.all().order_by('-created_at')
+    
+#     return render(request, 'gallery_upload.html', {'gallery': gallery})
+
 def gallery_view(request):
-    gallery = Gallery.objects.all().order_by('-created_at')
+    gallery = Gallery.objects.all().order_by('-id')
     
     return render(request, 'gallery_upload.html', {'gallery': gallery})
+
 
 def image_view(request):
 
