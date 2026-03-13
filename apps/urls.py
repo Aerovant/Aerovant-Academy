@@ -54,7 +54,7 @@ urlpatterns = [
     
     path("students/", views.student_details, name="student_details"),
     path('student_Enroll/', views.student_enroll, name='student_Enroll'),
-    path("create/", views.student_create, name="student_create"),
+    path("student-create/", views.student_create, name="student_create"),
     path('student/edit/<int:id>/', views.student_edit, name='student_edit'),
     path('student/delete/<int:id>/', views.student_delete, name='student_delete'),
     path("export/", views.export_students, name="export_students"),
