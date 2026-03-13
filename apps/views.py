@@ -1025,7 +1025,6 @@ def gallery_view(request):
 
 
 def image_view(request):
-
     gallery = Gallery.objects.all().order_by("-id")
 
     images = Gallery.objects.filter(media_type="image")
@@ -1044,7 +1043,6 @@ def image_view(request):
         'total_images': total_images,
         'categories': categories,
     }
-
     return render(request, 'image_view.html', context)
 
     
