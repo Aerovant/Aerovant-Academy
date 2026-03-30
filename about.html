@@ -11,16 +11,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/about.css">
-    <style>
-       
-      
-    </style>
+    <link rel="icon" href="images/logos/logo only no bg.png">
+
 </head>
 <body>
     <header>    
-    <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
-        <div class="container">
-            <a class="navbar-brand logo-smooth" href="index.html">
+        <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+            <div class="container">
+                <a class="navbar-brand logo-smooth" href="index.html">
                     <img src="images/logo (3).png" alt="Aerovant Academy" class="logo-img">
                 </a> 
             
@@ -32,7 +30,7 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Your existing nav items unchanged -->
                         <li class="nav-item"><a class="nav-link active smooth-nav" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link smooth-nav" href="index.html#courses">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link smooth-nav" href="#courses">Courses</a></li>
                         <li class="nav-item"><a class="nav-link smooth-nav" href="about.html">About</a></li>
                         <li class="nav-item"><a class="nav-link smooth-nav" href="gallery.html">Gallery</a></li>
 
@@ -50,13 +48,13 @@
                         </li> -->
 
                         <li class="nav-item"><a class="nav-link smooth-nav" href="#testimonial-section">Testimonial</a></li>
-                        <li class="nav-item"><a class="nav-link smooth-nav" href="index.html#contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link smooth-nav" href="#contact">Contact</a></li>
                         <li class="nav-item"><a class="nav-link smooth-nav" href="login.html" target="_blank" rel="noopener noreferrer">Login</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-</header>
+    </header>
 
 
         <!-- ========== MAIN CONTENT ========== -->
@@ -77,7 +75,30 @@
                 </div>
             </section>
 
-          
+            <!-- Stats -->
+            <section class="section-stats">
+                <div class="container">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number">500+</span>
+                            <div class="stat-label">Students Trained</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">25+</span>
+                            <div class="stat-label">Live Projects</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">100%</span>
+                            <div class="stat-label">Placement Support</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">10+</span>
+                            <div class="stat-label">Expert Mentors</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Features -->
             <section class="section-features" id="features">
                 <div class="container">
@@ -137,96 +158,96 @@
         </main>
 
 
-    <!-- ========== TESTIMONIAL SECTION ========== -->
-<section id="testimonial-section" style="background: var(--light-blue)">
-    <div class="container">
-        <h2 class="text-center mb-5" style="font-size: 2.8rem; font-weight: 800;">
-            What Our Students Say
-        </h2>
+            <!-- ========== TESTIMONIAL SECTION ========== -->
+        <section id="testimonial-section" style="background: var(--light-blue)">
+            <div class="container">
+                <h2 class="text-center mb-5" style="font-size: 2.8rem; font-weight: 800;">
+                    What Our Students Say
+                </h2>
 
-        <div class="row g-4">
+                <div class="row g-4">
 
-            <!-- Shalini -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card text-center">
-                    <img src="images/female.jpg" class="testimonial-img"> 
-                    
-                    <div class="testimonial-name">Shalini</div>
-                    <div class="testimonial-role">Python Full Stack Developer</div>
-                    <p class="mt-3">
-                        Aerovant Academy completely transformed my career. The live projects and placement support helped me secure a job within 2 months.
-                    </p>
+                    <!-- Shalini -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card text-center">
+                            <img src="images/female.jpg" class="testimonial-img"> 
+                            
+                            <div class="testimonial-name">Shalini</div>
+                            <div class="testimonial-role">Python Full Stack Developer</div>
+                            <p class="mt-3">
+                                Aerovant Academy completely transformed my career. The live projects and placement support helped me secure a job within 2 months.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Praveen -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card text-center">
+                            <img src="images/male.jpg" class="testimonial-img">
+                            <!--https://randomuser.me/api/portraits/men/32.jpg-->
+                            <div class="testimonial-name">Praveen</div>
+                            <div class="testimonial-role">Cloud Security Engineer</div>
+                            <p class="mt-3">
+                                The trainers are industry experts. I gained practical AWS and security knowledge that helped me crack interviews confidently.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Ezhilarasan -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card text-center">
+                            <img src="images/male.jpg" class="testimonial-img">
+                            <!--https://randomuser.me/api/portraits/men/45.jpg-->
+                            <div class="testimonial-name">Ezhilarasan</div>
+                            <div class="testimonial-role">Frontend Developer</div>
+                            <p class="mt-3">
+                                The structured curriculum and mentorship gave me real-world skills. Highly recommended for serious learners.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mohanapriya -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card text-center">
+                            <img src="images/female.jpg" class="testimonial-img">
+                            <!--https://randomuser.me/api/portraits/women/55.jpg-->
+                            <div class="testimonial-name">Mohanapriya</div>
+                            <div class="testimonial-role">Full Stack Developer</div>
+                            <p class="mt-3">
+                                From zero coding knowledge to full stack developer — Aerovant made it possible. Excellent support system!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Surendhar -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card text-center">
+                            <img src="images/male.jpg" class="testimonial-img">
+                            <!--https://randomuser.me/api/portraits/men/60.jpg-->
+                            <div class="testimonial-name">Surendhar</div>
+                            <div class="testimonial-role">Security Analyst</div>
+                            <p class="mt-3">
+                                Practical exposure, real-time case studies, and certification guidance helped me enter the cybersecurity field.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Jothiga -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card text-center">
+                            <img src="images/female.jpg" class="testimonial-img">
+                            <!--https://randomuser.me/api/portraits/women/30.jpg-->
+                            <div class="testimonial-name">Jothiga</div>
+                            <div class="testimonial-role">Software Engineer</div>
+                            <p class="mt-3">
+                                Friendly mentors, structured learning path, and strong placement assistance. Best decision of my career.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-            <!-- Praveen -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card text-center">
-                    <img src="images/male.jpg" class="testimonial-img">
-                    <!--https://randomuser.me/api/portraits/men/32.jpg-->
-                    <div class="testimonial-name">Praveen</div>
-                    <div class="testimonial-role">Cloud Security Engineer</div>
-                    <p class="mt-3">
-                        The trainers are industry experts. I gained practical AWS and security knowledge that helped me crack interviews confidently.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Ezhilarasan -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card text-center">
-                    <img src="images/male.jpg" class="testimonial-img">
-                    <!--https://randomuser.me/api/portraits/men/45.jpg-->
-                    <div class="testimonial-name">Ezhilarasan</div>
-                    <div class="testimonial-role">Frontend Developer</div>
-                    <p class="mt-3">
-                        The structured curriculum and mentorship gave me real-world skills. Highly recommended for serious learners.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Mohanapriya -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card text-center">
-                    <img src="images/female.jpg" class="testimonial-img">
-                    <!--https://randomuser.me/api/portraits/women/55.jpg-->
-                    <div class="testimonial-name">Mohanapriya</div>
-                    <div class="testimonial-role">Full Stack Developer</div>
-                    <p class="mt-3">
-                        From zero coding knowledge to full stack developer — Aerovant made it possible. Excellent support system!
-                    </p>
-                </div>
-            </div>
-
-            <!-- Surendhar -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card text-center">
-                    <img src="images/male.jpg" class="testimonial-img">
-                    <!--https://randomuser.me/api/portraits/men/60.jpg-->
-                    <div class="testimonial-name">Surendhar</div>
-                    <div class="testimonial-role">Security Analyst</div>
-                    <p class="mt-3">
-                        Practical exposure, real-time case studies, and certification guidance helped me enter the cybersecurity field.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Jothiga -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card text-center">
-                    <img src="images/female.jpg" class="testimonial-img">
-                    <!--https://randomuser.me/api/portraits/women/30.jpg-->
-                    <div class="testimonial-name">Jothiga</div>
-                    <div class="testimonial-role">Software Engineer</div>
-                    <p class="mt-3">
-                        Friendly mentors, structured learning path, and strong placement assistance. Best decision of my career.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
+        </section>
 
 <!-- COURSE DETAILS MODALS (Updated with consistent styling) -->
 
