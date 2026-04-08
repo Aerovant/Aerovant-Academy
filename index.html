@@ -303,7 +303,7 @@
                     <!-- Inside modal-body, replace the form section with this -->
                     <div id="formStatus" class="alert alert-info d-none mb-4" role="alert"></div>
 
-                    <form method="POST" action="https://api.web3forms.com/submit" id="autoForm">
+                    <form method="POST" action="https://api.web3forms.com/submit" id="autoForm" id="contactForm" autocomplete="off">
 
                         <input type="hidden" name="access_key" value="ea4b321e-2a61-4262-b6df-3972d9fbfcec">
 
@@ -996,7 +996,7 @@
                         <p class="lead text-white mb-5">Get personalized career guidance. Our experts will contact you
                             within 24 hours.</p>
 
-                        <form method="POST" action="https://api.web3forms.com/submit" class="row g-3" id="contact-form">
+                        <form method="POST" action="https://api.web3forms.com/submit" id="contact-Form" autocomplete="off" class="row g-3" >
 
                             <input type="hidden" name="access_key" value="ea4b321e-2a61-4262-b6df-3972d9fbfcec">
 
@@ -1023,6 +1023,7 @@
 
                                 </select>
                             </div>
+
                             <div class="col-12">
                                 <textarea name="message" class="form-control py-3 px-4" rows="4"
                                     placeholder="Tell us about your career goals or questions..." required></textarea>
@@ -1343,6 +1344,48 @@
                     }
                 });
             }
+        });
+    </script>
+
+
+    <script>
+        const form = document.getElementById("contactForm");
+
+        form.addEventListener("submit", function(e) {
+            e.preventDefault(); // page reload prevent
+
+            // 🔹 Get values
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            // 🔹 API Call (example)
+            fetch("YOUR_API_URL", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    phone: phone
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Form submitted successfully ✅");
+
+                // 🔥 IMPORTANT → form clear
+                form.reset();
+
+                // 🔥 browser cache clear trick
+                window.history.replaceState(null, null, window.location.href);
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Error ❌");
+            });
+
         });
     </script>
 
