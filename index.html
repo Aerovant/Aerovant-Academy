@@ -341,8 +341,11 @@
     </section>
 
     <!-- ============ Courses ============
-       data-status="open"     shows the batch strip.
-       data-status="interest" shows "Register interest" (use until a mentor and batch are confirmed). -->
+       Course tabs above, one full-width panel below. Python Full Stack Development is selected first.
+       Each tab and its panel share a track name: tab-python controls track-python, and so on.
+       data-status="open"     shows "Ask for the syllabus".
+       data-status="interest" shows "Register interest" (use until a mentor and batch are confirmed).
+       To show another course, uncomment its tab AND its panel below; the tab script picks them up. -->
     <section id="courses" class="section rule-top courses" aria-labelledby="h-courses">
       <div class="wrap">
         <div class="head">
@@ -351,256 +354,289 @@
               class="tbc">weekends / weekday evenings</span> so it fits around college. Online, classroom or hybrid.</p>
         </div>
 
-        <div class="switch" data-switch>
-
-          <div class="switch__item" data-track="python" data-status="open">
-            <button class="switch__q" type="button" aria-expanded="false" aria-controls="track-python"><span
-              class="track__status" data-when="open">1 month</span><span class="track__status"
-              data-when="interest">Register interest</span><span class="display">Python Full Stack
-              Development</span>
-            </button>
-
-            <div class="switch__a" id="track-python">
-              <article class="track">
-                <div class="track__top">
-                  <h3 class="display">Python Full Stack Development</h3>
-                  <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                    <rect class="s" x="2" y="26" width="62" height="48" />
-                    <rect class="f" x="89" y="26" width="62" height="48" />
-                    <rect class="s" x="176" y="26" width="62" height="48" />
-                    <line class="s" x1="64" y1="50" x2="89" y2="50" />
-                    <line class="s" x1="151" y1="50" x2="176" y2="50" /><text x="33" y="55"
-                      text-anchor="middle">React</text><text x="120" y="55" text-anchor="middle">Django</text><text
-                      x="207" y="55" text-anchor="middle">MySQL</text><text class="cap" x="2" y="94">browser → API →
-                      database</text>
-                  </svg>
-                </div>
-
-                <dl class="spec">
-                  <dt>Who it’s for</dt>
-                  <dd>Students who want to build software</dd>
-                  <dt>You learn</dt>
-                  <dd class="tools">HTML, CSS, JavaScript, React, Python, Django, Flask, REST APIs, MySQL, Git</dd>
-                  <dt class="build-dt">You build</dt>
-                  <dd class="build-dd">A complete web application with login, a database and a live deployment</dd>
-                  <dt>Where it can lead</dt>
-                  <dd>Junior developer, Python developer, front-end developer</dd>
-                </dl>
-                <div class="track__foot">
-                  <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
-                      class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
-                      href="pdf/Refund_Policy.pdf">Refund policy</a></p> -->
-
-                  <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                    is fixed.</p>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Python Full Stack Development"
-                    data-when="open">Ask for the syllabus →</a>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course"
-                    data-topic="Python Full Stack Development (register interest)" data-when="interest">Register
-                    interest →</a>
-                </div>
-              </article>
-            </div>
+        <div class="tracks" data-tracks>
+          <div class="tracks__tabs" role="tablist" aria-label="Courses">
+            <button class="tracks__tab" type="button" role="tab" id="tab-python" aria-controls="track-python"
+              aria-selected="true" data-status="open"><span class="track__status"
+                data-when="open">1 month</span><span class="track__status" data-when="interest">Register interest</span><span
+                class="tracks__name">Python Full Stack Development</span></button>
+            <button class="tracks__tab" type="button" role="tab" id="tab-cloud" aria-controls="track-cloud"
+              aria-selected="false" tabindex="-1" data-status="open"><span class="track__status"
+                data-when="open">1 month</span><span class="track__status" data-when="interest">Register interest</span><span
+                class="tracks__name">Cloud Security Engineering</span></button>
+            <!-- Not shown yet. Uncomment a tab together with its panel further down.
+            <button class="tracks__tab" type="button" role="tab" id="tab-ai" aria-controls="track-ai"
+              aria-selected="false" tabindex="-1" data-status="interest"><span class="track__status"
+                data-when="open">4 months</span><span class="track__status" data-when="interest">Register interest</span><span
+                class="tracks__name">Artificial Intelligence</span></button>
+            <button class="tracks__tab" type="button" role="tab" id="tab-data" aria-controls="track-data"
+              aria-selected="false" tabindex="-1" data-status="interest"><span class="track__status"
+                data-when="open">4 months</span><span class="track__status" data-when="interest">Register interest</span><span
+                class="tracks__name">Data Analysis</span></button>
+            <button class="tracks__tab" type="button" role="tab" id="tab-testing" aria-controls="track-testing"
+              aria-selected="false" tabindex="-1" data-status="interest"><span class="track__status"
+                data-when="open">4 months</span><span class="track__status" data-when="interest">Register interest</span><span
+                class="tracks__name">Software Testing</span></button>
+            -->
           </div>
 
-          <div class="switch__item" data-track="cloud" data-status="open">
-            <button class="switch__q" type="button" aria-expanded="true" aria-controls="track-cloud"><span
-                class="track__status" data-when="open">1 month</span><span class="track__status"
-                data-when="interest">Register interest</span><span class="display">Cloud Security
-                Engineering</span></button>
-            <div class="switch__a is-open" id="track-cloud">
-              <article class="track">
-                <div class="track__top">
-                  <h3 class="display">Cloud Security Engineering</h3>
-                  <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                    <rect class="s" x="2" y="2" width="236" height="96" stroke-dasharray="5 4" />
-                    <rect class="s" x="18" y="24" width="150" height="60" />
-                    <rect class="f" x="32" y="42" width="60" height="30" />
-                    <rect class="s" x="100" y="42" width="54" height="30" />
-                    <line class="s" x1="168" y1="54" x2="222" y2="54" />
-                    <rect class="k" x="188" y="44" width="18" height="20" /><text class="cap" x="10" y="16">AWS
-                      account</text><text class="cap" x="24" y="37">VPC</text><text class="cap" x="184"
-                      y="82">WAF</text>
-                  </svg>
-                </div>
+          <div class="tracks__panel" role="tabpanel" id="track-python" aria-labelledby="tab-python" tabindex="0"
+            data-track="python" data-status="open">
+            <article class="track">
+                  <div class="track__top">
+                    <h3 class="display">Python Full Stack Development</h3>
+                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                      <rect class="s" x="2" y="26" width="62" height="48" />
+                      <rect class="f" x="89" y="26" width="62" height="48" />
+                      <rect class="s" x="176" y="26" width="62" height="48" />
+                      <line class="s" x1="64" y1="50" x2="89" y2="50" />
+                      <line class="s" x1="151" y1="50" x2="176" y2="50" /><text x="33" y="55"
+                        text-anchor="middle">React</text><text x="120" y="55" text-anchor="middle">Django</text><text
+                        x="207" y="55" text-anchor="middle">MySQL</text><text class="cap" x="2" y="94">browser → API →
+                        database</text>
+                    </svg>
+                  </div>
 
-                <dl class="spec">
-                  <dt>Who it’s for</dt>
-                  <dd>Students aiming at cloud or security roles</dd>
-                  <dt>You learn</dt>
-                  <dd class="tools">AWS core services, IAM, VPC, security groups, WAF, and ethical hacking with Nmap,
-                    Wireshark, Burp Suite and Metasploit</dd>
-                  <dt class="build-dt">You build</dt>
-                  <dd class="build-dd">A secured AWS environment, and a penetration test report on a practice target
-                  </dd>
-                  <dt>Where it can lead</dt>
-                  <dd>Junior security analyst, SOC analyst, cloud support engineer</dd>
-                </dl>
+                  <dl class="spec">
+                    <dt>Who it’s for</dt>
+                    <dd>Students who want to build software</dd>
+                    <dt>You learn</dt>
+                    <dd class="tools">HTML, CSS, JavaScript, React, Python, Django, Flask, REST APIs, MySQL, Git</dd>
+                    <dt class="build-dt">You build</dt>
+                    <dd class="build-dd">A complete web application with login, a database and a live deployment</dd>
+                    <dt>Where it can lead</dt>
+                    <dd>Junior developer, Python developer, front-end developer</dd>
+                  </dl>
+                  <div class="track__foot">
+                    <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+                        class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
+                        href="pdf/Refund_Policy.pdf">Refund policy</a></p> -->
 
-                <div class="track__foot">
-                  <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
-                      class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
-                      href="pdf/Refund_Policy.pdf">Refund policy</a></p> -->
-
-                  <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                    is fixed.</p>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Cloud Security Engineering"
-                    data-when="open">Ask for the syllabus →</a>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course"
-                    data-topic="Cloud Security Engineering (register interest)" data-when="interest">Register interest
-                    →</a>
-                </div>
-
-              </article>
-            </div>
+                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                      is fixed.</p>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Python Full Stack Development"
+                      data-when="open">Ask for the syllabus →</a>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course"
+                      data-topic="Python Full Stack Development (register interest)" data-when="interest">Register
+                      interest →</a>
+                  </div>
+                </article>
           </div>
 
-          <!-- <div class="switch__item" data-track="ai" data-status="interest">
-            <button class="switch__q" type="button" aria-expanded="false" aria-controls="track-ai"><span
-                class="track__status" data-when="open">4 months</span><span class="track__status"
-                data-when="interest">Register interest</span><span class="display">Artificial
-                Intelligence</span></button>
-            <div class="switch__a" id="track-ai">
-              <article class="track">
-                <div class="track__top">
-                  <h3 class="display">Artificial Intelligence</h3>
-                  <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                    <g class="s-thin">
-                      <line x1="30" y1="28" x2="120" y2="16" />
-                      <line x1="30" y1="28" x2="120" y2="50" />
-                      <line x1="30" y1="28" x2="120" y2="84" />
-                      <line x1="30" y1="72" x2="120" y2="16" />
-                      <line x1="30" y1="72" x2="120" y2="50" />
-                      <line x1="30" y1="72" x2="120" y2="84" />
-                      <line x1="120" y1="16" x2="210" y2="50" />
-                      <line x1="120" y1="50" x2="210" y2="50" />
-                      <line x1="120" y1="84" x2="210" y2="50" />
-                    </g>
-                    <circle class="w" cx="30" cy="28" r="10" />
-                    <circle class="w" cx="30" cy="72" r="10" />
-                    <circle class="w" cx="120" cy="16" r="10" />
-                    <circle class="w" cx="120" cy="50" r="10" />
-                    <circle class="w" cx="120" cy="84" r="10" />
-                    <circle class="f" cx="210" cy="50" r="14" />
-                  </svg>
-                </div>
-                <dl class="spec">
-                  <dt>Who it’s for</dt>
-                  <dd>Students comfortable with maths and some Python</dd>
-                  <dt>You learn</dt>
-                  <dd class="tools">Machine learning, deep learning, NLP and computer vision, with Scikit-learn,
-                    TensorFlow and PyTorch</dd>
-                  <dt class="build-dt">You build</dt>
-                  <dd class="build-dd">A trained model, deployed with Docker</dd>
-                  <dt>Where it can lead</dt>
-                  <dd>Junior ML engineer, AI developer</dd>
-                </dl>
-                <div class="track__foot">
-                  <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
-                      class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
-                      href="pdf/Refund_Policy.pdf">Refund policy</a></p>
-                  <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                    is fixed.</p>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Artificial Intelligence"
-                    data-when="open">Ask for the syllabus →</a>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course"
-                    data-topic="Artificial Intelligence (register interest)" data-when="interest">Register interest
-                    →</a>
-                </div>
-              </article>
-            </div>
+          <div class="tracks__panel" role="tabpanel" id="track-cloud" aria-labelledby="tab-cloud" tabindex="0"
+            data-track="cloud" data-status="open" hidden>
+            <article class="track">
+                  <div class="track__top">
+                    <h3 class="display">Cloud Security Engineering</h3>
+                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                      <rect class="s" x="2" y="2" width="236" height="96" stroke-dasharray="5 4" />
+                      <rect class="s" x="18" y="24" width="150" height="60" />
+                      <rect class="f" x="32" y="42" width="60" height="30" />
+                      <rect class="s" x="100" y="42" width="54" height="30" />
+                      <line class="s" x1="168" y1="54" x2="222" y2="54" />
+                      <rect class="k" x="188" y="44" width="18" height="20" /><text class="cap" x="10" y="16">AWS
+                        account</text><text class="cap" x="24" y="37">VPC</text><text class="cap" x="184"
+                        y="82">WAF</text>
+                    </svg>
+                  </div>
+
+                  <dl class="spec">
+                    <dt>Who it’s for</dt>
+                    <dd>Students aiming at cloud or security roles</dd>
+                    <dt>You learn</dt>
+                    <dd class="tools">AWS core services, IAM, VPC, security groups, WAF, and ethical hacking with Nmap,
+                      Wireshark, Burp Suite and Metasploit</dd>
+                    <dt class="build-dt">You build</dt>
+                    <dd class="build-dd">A secured AWS environment, and a penetration test report on a practice target
+                    </dd>
+                    <dt>Where it can lead</dt>
+                    <dd>Junior security analyst, SOC analyst, cloud support engineer</dd>
+                  </dl>
+
+                  <div class="track__foot">
+                    <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+                        class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
+                        href="pdf/Refund_Policy.pdf">Refund policy</a></p> -->
+
+                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                      is fixed.</p>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Cloud Security Engineering"
+                      data-when="open">Ask for the syllabus →</a>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course"
+                      data-topic="Cloud Security Engineering (register interest)" data-when="interest">Register interest
+                      →</a>
+                  </div>
+
+                </article>
           </div>
 
-          <div class="switch__item" data-track="data" data-status="interest">
-            <button class="switch__q" type="button" aria-expanded="false" aria-controls="track-data"><span
-                class="track__status" data-when="open">4 months</span><span class="track__status"
-                data-when="interest">Register interest</span><span class="display">Data Analysis</span></button>
-            <div class="switch__a" id="track-data">
-              <article class="track">
-                <div class="track__top">
-                  <h3 class="display">Data Analysis</h3>
-                  <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                    <line class="s" x1="14" y1="4" x2="14" y2="86" />
-                    <line class="s" x1="14" y1="86" x2="236" y2="86" />
-                    <rect class="s" x="30" y="56" width="28" height="30" />
-                    <rect class="s" x="70" y="40" width="28" height="46" />
-                    <rect class="s" x="110" y="48" width="28" height="38" />
-                    <rect class="f" x="150" y="22" width="28" height="64" />
-                    <rect class="s" x="190" y="34" width="28" height="52" />
-                    <polyline class="p" points="44,46 84,30 124,38 164,12 204,24" />
-                  </svg>
-                </div>
-                <dl class="spec">
-                  <dt>Who it’s for</dt>
-                  <dd>Any degree, comfortable with numbers</dd>
-                  <dt>You learn</dt>
-                  <dd class="tools">SQL, Python with Pandas and NumPy, Power BI, Tableau, statistics</dd>
-                  <dt class="build-dt">You build</dt>
-                  <dd class="build-dd">A dashboard and written analysis on a business dataset</dd>
-                  <dt>Where it can lead</dt>
-                  <dd>Data analyst, MIS analyst, BI developer</dd>
-                </dl>
-                <div class="track__foot">
-                  <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
-                      class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
-                      href="pdf/Refund_Policy.pdf">Refund policy</a></p>
-                  <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                    is fixed.</p>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Data Analysis"
-                    data-when="open">Ask for the syllabus →</a>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course"
-                    data-topic="Data Analysis (register interest)" data-when="interest">Register interest →</a>
-                </div>
-              </article>
-            </div>
+          <!-- Not shown yet. Uncomment a panel together with its tab above.
+          <div class="tracks__panel" role="tabpanel" id="track-ai" aria-labelledby="tab-ai" tabindex="0"
+            data-track="ai" data-status="interest" hidden>
+            <article class="track">
+                  <div class="track__top">
+                    <h3 class="display">Artificial Intelligence</h3>
+                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                      <g class="s-thin">
+                        <line x1="30" y1="28" x2="120" y2="16" />
+                        <line x1="30" y1="28" x2="120" y2="50" />
+                        <line x1="30" y1="28" x2="120" y2="84" />
+                        <line x1="30" y1="72" x2="120" y2="16" />
+                        <line x1="30" y1="72" x2="120" y2="50" />
+                        <line x1="30" y1="72" x2="120" y2="84" />
+                        <line x1="120" y1="16" x2="210" y2="50" />
+                        <line x1="120" y1="50" x2="210" y2="50" />
+                        <line x1="120" y1="84" x2="210" y2="50" />
+                      </g>
+                      <circle class="w" cx="30" cy="28" r="10" />
+                      <circle class="w" cx="30" cy="72" r="10" />
+                      <circle class="w" cx="120" cy="16" r="10" />
+                      <circle class="w" cx="120" cy="50" r="10" />
+                      <circle class="w" cx="120" cy="84" r="10" />
+                      <circle class="f" cx="210" cy="50" r="14" />
+                    </svg>
+                  </div>
+                  <dl class="spec">
+                    <dt>Who it’s for</dt>
+                    <dd>Students comfortable with maths and some Python</dd>
+                    <dt>You learn</dt>
+                    <dd class="tools">Machine learning, deep learning, NLP and computer vision, with Scikit-learn,
+                      TensorFlow and PyTorch</dd>
+                    <dt class="build-dt">You build</dt>
+                    <dd class="build-dd">A trained model, deployed with Docker</dd>
+                    <dt>Where it can lead</dt>
+                    <dd>Junior ML engineer, AI developer</dd>
+                  </dl>
+                  <div class="track__foot">
+                    <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+                        class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
+                        href="pdf/Refund_Policy.pdf">Refund policy</a></p>
+                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                      is fixed.</p>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Artificial Intelligence"
+                      data-when="open">Ask for the syllabus →</a>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course"
+                      data-topic="Artificial Intelligence (register interest)" data-when="interest">Register interest
+                      →</a>
+                  </div>
+                </article>
           </div>
 
-          <div class="switch__item" data-track="testing" data-status="interest">
-            <button class="switch__q" type="button" aria-expanded="false" aria-controls="track-testing"><span
-                class="track__status" data-when="open">4 months</span><span class="track__status"
-                data-when="interest">Register interest</span><span class="display">Software Testing</span></button>
-            <div class="switch__a" id="track-testing">
-              <article class="track">
-                <div class="track__top">
-                  <h3 class="display">Software Testing</h3>
-                  <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                    <rect class="s" x="2" y="8" width="20" height="20" />
-                    <polyline class="s" points="6,18 11,23 19,12" /><text x="34" y="23">login accepts valid user</text>
-                    <rect class="f" x="2" y="40" width="20" height="20" />
-                    <line class="s" x1="7" y1="45" x2="17" y2="55" />
-                    <line class="s" x1="17" y1="45" x2="7" y2="55" /><text x="34" y="55">cart total after refund</text>
-                    <rect class="s" x="2" y="72" width="20" height="20" />
-                    <polyline class="s" points="6,82 11,87 19,76" /><text x="34" y="87">API returns 404 on bad id</text>
-                  </svg>
-                </div>
-                <dl class="spec">
-                  <dt>Who it’s for</dt>
-                  <dd>Any degree, including non-CS branches</dd>
-                  <dt>You learn</dt>
-                  <dd class="tools">Manual testing, Selenium, Appium, Postman, REST Assured, Agile</dd>
-                  <dt class="build-dt">You build</dt>
-                  <dd class="build-dd">A manual and automated test suite for a working application</dd>
-                  <dt>Where it can lead</dt>
-                  <dd>QA engineer, test engineer, automation tester</dd>
-                </dl>
-                <div class="track__foot">
-                  <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
-                      class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
-                      href="pdf/Refund_Policy.pdf">Refund policy</a></p>
-                  <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                    is fixed.</p>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Software Testing"
-                    data-when="open">Ask for the syllabus →</a>
-                  <a class="btn btn--ink" href="#demo" data-interest="Course"
-                    data-topic="Software Testing (register interest)" data-when="interest">Register interest →</a>
-                </div>
-              </article>
-            </div>
-          </div> -->
+          <div class="tracks__panel" role="tabpanel" id="track-data" aria-labelledby="tab-data" tabindex="0"
+            data-track="data" data-status="interest" hidden>
+            <article class="track">
+                  <div class="track__top">
+                    <h3 class="display">Data Analysis</h3>
+                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                      <line class="s" x1="14" y1="4" x2="14" y2="86" />
+                      <line class="s" x1="14" y1="86" x2="236" y2="86" />
+                      <rect class="s" x="30" y="56" width="28" height="30" />
+                      <rect class="s" x="70" y="40" width="28" height="46" />
+                      <rect class="s" x="110" y="48" width="28" height="38" />
+                      <rect class="f" x="150" y="22" width="28" height="64" />
+                      <rect class="s" x="190" y="34" width="28" height="52" />
+                      <polyline class="p" points="44,46 84,30 124,38 164,12 204,24" />
+                    </svg>
+                  </div>
+                  <dl class="spec">
+                    <dt>Who it’s for</dt>
+                    <dd>Any degree, comfortable with numbers</dd>
+                    <dt>You learn</dt>
+                    <dd class="tools">SQL, Python with Pandas and NumPy, Power BI, Tableau, statistics</dd>
+                    <dt class="build-dt">You build</dt>
+                    <dd class="build-dd">A dashboard and written analysis on a business dataset</dd>
+                    <dt>Where it can lead</dt>
+                    <dd>Data analyst, MIS analyst, BI developer</dd>
+                  </dl>
+                  <div class="track__foot">
+                    <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+                        class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
+                        href="pdf/Refund_Policy.pdf">Refund policy</a></p>
+                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                      is fixed.</p>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Data Analysis"
+                      data-when="open">Ask for the syllabus →</a>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course"
+                      data-topic="Data Analysis (register interest)" data-when="interest">Register interest →</a>
+                  </div>
+                </article>
+          </div>
 
+          <div class="tracks__panel" role="tabpanel" id="track-testing" aria-labelledby="tab-testing" tabindex="0"
+            data-track="testing" data-status="interest" hidden>
+            <article class="track">
+                  <div class="track__top">
+                    <h3 class="display">Software Testing</h3>
+                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                      <rect class="s" x="2" y="8" width="20" height="20" />
+                      <polyline class="s" points="6,18 11,23 19,12" /><text x="34" y="23">login accepts valid user</text>
+                      <rect class="f" x="2" y="40" width="20" height="20" />
+                      <line class="s" x1="7" y1="45" x2="17" y2="55" />
+                      <line class="s" x1="17" y1="45" x2="7" y2="55" /><text x="34" y="55">cart total after refund</text>
+                      <rect class="s" x="2" y="72" width="20" height="20" />
+                      <polyline class="s" points="6,82 11,87 19,76" /><text x="34" y="87">API returns 404 on bad id</text>
+                    </svg>
+                  </div>
+                  <dl class="spec">
+                    <dt>Who it’s for</dt>
+                    <dd>Any degree, including non-CS branches</dd>
+                    <dt>You learn</dt>
+                    <dd class="tools">Manual testing, Selenium, Appium, Postman, REST Assured, Agile</dd>
+                    <dt class="build-dt">You build</dt>
+                    <dd class="build-dd">A manual and automated test suite for a working application</dd>
+                    <dt>Where it can lead</dt>
+                    <dd>QA engineer, test engineer, automation tester</dd>
+                  </dl>
+                  <div class="track__foot">
+                    <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+                        class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
+                        href="pdf/Refund_Policy.pdf">Refund policy</a></p>
+                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                      is fixed.</p>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Software Testing"
+                      data-when="open">Ask for the syllabus →</a>
+                    <a class="btn btn--ink" href="#demo" data-interest="Course"
+                      data-topic="Software Testing (register interest)" data-when="interest">Register interest →</a>
+                  </div>
+                </article>
+          </div>
+          -->
         </div>
       </div>
     </section>
+
+    <script>
+      /* ============ Course tabs ============
+         Click or use the arrow keys to switch course. Only the panel below changes. */
+      (function () {
+        var root = document.querySelector('[data-tracks]');
+        if (!root) return;
+        var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+
+        function select(tab, focus) {
+          tabs.forEach(function (t) {
+            var on = t === tab;
+            t.setAttribute('aria-selected', String(on));
+            t.tabIndex = on ? 0 : -1;
+            var panel = document.getElementById(t.getAttribute('aria-controls'));
+            if (panel) panel.hidden = !on;
+          });
+          if (focus) tab.focus();
+        }
+
+        tabs.forEach(function (tab, i) {
+          tab.addEventListener('click', function () { select(tab, false); });
+          tab.addEventListener('keydown', function (e) {
+            var next = null;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = tabs[(i + 1) % tabs.length];
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = tabs[(i - 1 + tabs.length) % tabs.length];
+            else if (e.key === 'Home') next = tabs[0];
+            else if (e.key === 'End') next = tabs[tabs.length - 1];
+            if (next) { e.preventDefault(); select(next, true); }
+          });
+        });
+      })();
+    </script>
 
     <!-- ============ Internship with training ============ -->
     <section id="internship" class="section rule-top band intern" aria-labelledby="h-intern">
@@ -1094,18 +1130,29 @@
 
     .gallery-filter {
       appearance: none;
-      border: 1px solid currentColor;
+      border: 1px solid var(--ink);
       background: transparent;
+      color: var(--ink);
       padding: 10px 18px;
       font: inherit;
       cursor: pointer;
       transition: all .25s ease;
     }
 
-    .gallery-filter:hover,
-    .gallery-filter.active {
-      background: currentColor;
-      color: #fff;
+    /* Hover: light band behind dark text. Active: dark button with light text, like the site's ink buttons.
+       (Previously `background: currentColor` picked up the white text colour, so the button went blank.) */
+    @media (hover: hover) {
+      .gallery-filter:hover {
+        background: var(--band);
+        color: var(--ink);
+      }
+    }
+
+    .gallery-filter.active,
+    .gallery-filter.active:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--paper);
     }
 
     .gallery-grid {
@@ -1182,6 +1229,97 @@
 
     .gallery-item.is-hidden {
       display: none;
+    }
+
+    /* ============ Courses: tabs above, full-width panel below ============ */
+    .tracks__tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .tracks__tab {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      min-width: min(100%, 300px);
+      padding: 14px 22px 15px;
+      background: var(--sheet);
+      border: 1.5px solid var(--ink);
+      border-radius: var(--radius);
+      color: var(--ink);
+      text-align: left;
+    }
+
+    .tracks__name {
+      font-family: var(--display);
+      font-stretch: 75%;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.05;
+    }
+
+    @media (hover: hover) {
+      .tracks__tab:hover {
+        background: var(--band);
+      }
+    }
+
+    .tracks__tab[aria-selected="true"],
+    .tracks__tab[aria-selected="true"]:hover {
+      background: var(--hl);
+    }
+
+    /* A small pointer under the selected course, aimed at the content it opens. */
+    .tracks__tab[aria-selected="true"]::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      bottom: -11px;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-top: 9px solid var(--ink);
+    }
+
+    .tracks__panel {
+      background: var(--sheet);
+      border: 1.5px solid var(--ink);
+      padding: clamp(22px, 3vw, 40px);
+    }
+
+    .tracks__panel .spec {
+      grid-template-columns: minmax(110px, 200px) minmax(0, 1fr);
+    }
+
+    /* The old accordion hid this title on smaller screens; in the panel it is always shown. */
+    .js .tracks__panel .track__top h3 {
+      display: block;
+    }
+
+    @media (max-width: 560px) {
+      .tracks__tab {
+        flex: 1 1 100%;
+      }
+    }
+
+    /* Phones: each label sits above its text, so the details use the full panel width. */
+    @media (max-width: 600px) {
+      .tracks__panel .spec {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .tracks__panel .spec dt {
+        padding: 14px 0 2px;
+      }
+
+      .tracks__panel .spec dd,
+      .tracks__panel .spec dd.build-dd {
+        padding: 0 0 14px;
+        border-top: 0;
+      }
     }
 
     /* ============ Lightbox ============ */
@@ -1523,12 +1661,12 @@
             <p>₹<span class="tbc">fee</span> for the full four months. You can pay in <span class="tbc">n</span>
               instalments.</p>
           </details>
-          <details>
+          <!-- <details>
             <summary>What if I want to stop?</summary>
             <p>You can ask for a refund within 7 days of paying, as long as you have used less than 20% of the course.
               Approved refunds are paid back in 7 to 10 business days. <a href="pdf/Refund_Policy.pdf">Read the full
                 refund policy</a>.</p>
-          </details>
+          </details> -->
           <details>
             <summary>What certificate do I get?</summary>
             <p>A course completion certificate from Aerovant Academy. It is not a university or government
@@ -1640,10 +1778,12 @@
           <a href="index.html">Home</a>
           <!-- <a href="#courses">Courses</a> -->
           <a href="#internship">Internships</a>
-          <a href="#workshops">Workshops</a>
+          <a href="#colleges">For colleges</a>
+          <a href="#students">Testimonials</a>
           <!-- <a href="#placement">Placement support</a> -->
           <a href="about.html">About</a>
         </div>
+
         <div>
           <h2>Resources</h2>
           <a href="login.html">Student login</a>
@@ -1664,7 +1804,9 @@
           <a href="https://wa.me/919042647714">WhatsApp</a>
           <a href="mailto:support@aerovantacademy.com">support@<wbr>aerovantacademy.com</a>
         </div>
+        
       </div>
+
       <div class="base">
         <span>© 2026 Aerovant Academy</span>
         <ul>
