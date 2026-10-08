@@ -810,7 +810,8 @@
           </li>
 
          Until at least one document is real, add the `hidden` attribute to this <section>. -->
-    <section id="proof" class="section rule-top proofdocs" aria-labelledby="h-proof">
+    
+          <!-- <section id="proof" class="section rule-top proofdocs" aria-labelledby="h-proof">
       <div class="wrap">
         <div class="proofdocs__copy">
           <p class="kicker">Academic and institutional proof</p>
@@ -838,7 +839,553 @@
           </li>
         </ul>
       </div>
-    </section>
+    </section> -->
+
+
+    <!-- ============ Gallery ============ -->
+  <section id="gallery" class="section rule-top gallery-section" aria-labelledby="h-gallery">
+    <div class="wrap">
+
+      <div class="gallery__header">
+        <div>
+          <p class="kicker">Gallery</p>
+          <h2 id="h-gallery" class="display h2">Moments from learning.</h2>
+        </div>
+
+        <p class="gallery__intro">
+          A glimpse into our workshops, training sessions, student activities and events.
+        </p>
+      </div>
+
+      <!-- Gallery Filters -->
+      <div class="gallery__filters" role="tablist" aria-label="Gallery categories">
+        <button class="gallery-filter active" data-filter="all" type="button">All</button>
+        <button class="gallery-filter" data-filter="workshops" type="button">Workshops</button>
+        <button class="gallery-filter" data-filter="events" type="button">Events</button>
+        <button class="gallery-filter" data-filter="training" type="button">Training</button>
+        <button class="gallery-filter" data-filter="students" type="button">Student Activities</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="gallery-grid">
+
+        <!-- SAMPLE GALLERY DATA — REPLACE WITH REAL IMAGES -->
+
+        <article class="gallery-item gallery-item--large" data-category="workshops">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/python-workshop.jpg"
+            data-title="Python Full Stack Workshop"
+            data-category="Workshops"
+            data-description="Hands-on technical learning session."
+          >
+            <img
+              src="academy img/s12.png"
+              alt="Students participating in a Python Full Stack workshop"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Workshops</span>
+              <span class="gallery-title">Python Full Stack Workshop</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item" data-category="workshops">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/cloud-security-workshop.jpg"
+            data-title="Cloud Security Workshop"
+            data-category="Workshops"
+            data-description="Hands-on cloud security learning session."
+          >
+            <img
+              src="academy img/s1.png"
+              alt="Students participating in a cloud security workshop"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Workshops</span>
+              <span class="gallery-title">Cloud Security Workshop</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item" data-category="students">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/student-project.jpg"
+            data-title="Student Project Presentation"
+            data-category="Student Activities"
+            data-description="Students presenting their project work."
+          >
+            <img
+              src="academy img/s3.png"
+              alt="Students presenting their project"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Student Activities</span>
+              <span class="gallery-title">Student Project Presentation</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item" data-category="training">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/training-session.jpg"
+            data-title="Technical Training Session"
+            data-category="Training"
+            data-description="Practical technology training session."
+          >
+            <img
+              src="academy img/s4.png"
+              alt="Students attending a technical training session"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Training</span>
+              <span class="gallery-title">Technical Training Session</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item" data-category="training">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/career-session.jpg"
+            data-title="Career & Interview Preparation"
+            data-category="Training"
+            data-description="Career and interview preparation session."
+          >
+            <img
+              src="academy img/s5.png"
+              alt="Students participating in a career preparation session"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Training</span>
+              <span class="gallery-title">Career & Interview Preparation</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item" data-category="students">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/student-activity.jpg"
+            data-title="Student Team Activity"
+            data-category="Student Activities"
+            data-description="Collaborative student activity."
+          >
+            <img
+              src="academy img/s9.png"
+              alt="Students working together during a team activity"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Student Activities</span>
+              <span class="gallery-title">Student Team Activity</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item gallery-item--wide" data-category="events">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/tech-workshop.jpg"
+            data-title="Technology Awareness Workshop"
+            data-category="Events"
+            data-description="Technology-focused awareness session."
+          >
+            <img
+              src="academy img/s6.png"
+              alt="Technology awareness workshop at Aerovant Academy"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Events</span>
+              <span class="gallery-title">Technology Awareness Workshop</span>
+            </span>
+          </button>
+        </article>
+
+        <article class="gallery-item" data-category="students">
+          <button
+            class="gallery-card"
+            type="button"
+            data-image="gallery/images/project-demo.jpg"
+            data-title="Project Demonstration"
+            data-category="Student Activities"
+            data-description="Students demonstrating their project work."
+          >
+            <img
+              src="academy img/s11.png"
+              alt="Students demonstrating their project"
+              loading="lazy"
+            >
+            <span class="gallery-overlay">
+              <span class="gallery-meta">Student Activities</span>
+              <span class="gallery-title">Project Demonstration</span>
+            </span>
+          </button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Lightbox -->
+  <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+    <div class="gallery-lightbox__backdrop"></div>
+
+    <div class="gallery-lightbox__content" role="dialog" aria-modal="true">
+
+      <button
+        type="button"
+        class="gallery-lightbox__close"
+        aria-label="Close gallery"
+      >
+        &times;
+      </button>
+
+      <img
+        class="gallery-lightbox__image"
+        src=""
+        alt=""
+      >
+
+      <div class="gallery-lightbox__info">
+        <span class="gallery-lightbox__category"></span>
+        <h3 class="gallery-lightbox__title"></h3>
+        <p class="gallery-lightbox__description"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    /* ============ Gallery ============ */
+
+    .gallery-section {
+      overflow: hidden;
+    }
+
+    .gallery__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 50px;
+      margin-bottom: 42px;
+    }
+
+    .gallery__intro {
+      max-width: 430px;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .gallery__filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .gallery-filter {
+      appearance: none;
+      border: 1px solid currentColor;
+      background: transparent;
+      padding: 10px 18px;
+      font: inherit;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+
+    .gallery-filter:hover,
+    .gallery-filter.active {
+      background: currentColor;
+      color: #fff;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 260px;
+      gap: 14px;
+    }
+
+    .gallery-item {
+      min-width: 0;
+    }
+
+    .gallery-item--large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery-item--wide {
+      grid-column: span 2;
+    }
+
+    .gallery-card {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      background: #111;
+      overflow: hidden;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .5s ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 55px 24px 22px;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, .82),
+        rgba(0, 0, 0, 0)
+      );
+      color: #fff;
+    }
+
+    .gallery-meta {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 7px;
+      opacity: .8;
+    }
+
+    .gallery-title {
+      display: block;
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .gallery-item.is-hidden {
+      display: none;
+    }
+
+    /* ============ Lightbox ============ */
+
+    .gallery-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .gallery-lightbox.is-open {
+      display: flex;
+    }
+
+    .gallery-lightbox__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .88);
+    }
+
+    .gallery-lightbox__content {
+      position: relative;
+      z-index: 1;
+      width: min(1000px, 95vw);
+      max-height: 92vh;
+      overflow: auto;
+      background: #fff;
+    }
+
+    .gallery-lightbox__image {
+      display: block;
+      width: 100%;
+      max-height: 72vh;
+      object-fit: contain;
+      background: #111;
+    }
+
+    .gallery-lightbox__info {
+      padding: 22px 26px 26px;
+    }
+
+    .gallery-lightbox__category {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 7px;
+      opacity: .65;
+    }
+
+    .gallery-lightbox__title {
+      margin: 0 0 8px;
+    }
+
+    .gallery-lightbox__description {
+      margin: 0;
+    }
+
+    .gallery-lightbox__close {
+      position: absolute;
+      z-index: 2;
+      top: 12px;
+      right: 12px;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      background: #fff;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .gallery__header {
+        display: block;
+      }
+
+      .gallery__intro {
+        margin-top: 18px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 230px;
+      }
+
+      .gallery-item--large {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+
+      .gallery-item--wide {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .gallery__filters {
+        gap: 7px;
+      }
+
+      .gallery-filter {
+        padding: 8px 13px;
+        font-size: 13px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 260px;
+      }
+
+      .gallery-item--large,
+      .gallery-item--wide {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+
+      .gallery-lightbox {
+        padding: 15px;
+      }
+    }
+  </style>
+
+  <script>
+    /* ============ Gallery Filters ============ */
+
+    const galleryFilters = document.querySelectorAll(".gallery-filter");
+    const galleryItems = document.querySelectorAll(".gallery-item");
+
+    galleryFilters.forEach((filter) => {
+      filter.addEventListener("click", () => {
+        const category = filter.dataset.filter;
+
+        galleryFilters.forEach((button) => {
+          button.classList.remove("active");
+        });
+
+        filter.classList.add("active");
+
+        galleryItems.forEach((item) => {
+          const matches =
+            category === "all" ||
+            item.dataset.category === category;
+
+          item.classList.toggle("is-hidden", !matches);
+        });
+      });
+    });
+
+    /* ============ Gallery Lightbox ============ */
+
+    const galleryLightbox = document.getElementById("galleryLightbox");
+    const lightboxImage = galleryLightbox.querySelector(".gallery-lightbox__image");
+    const lightboxTitle = galleryLightbox.querySelector(".gallery-lightbox__title");
+    const lightboxCategory = galleryLightbox.querySelector(".gallery-lightbox__category");
+    const lightboxDescription = galleryLightbox.querySelector(".gallery-lightbox__description");
+    const lightboxClose = galleryLightbox.querySelector(".gallery-lightbox__close");
+    const lightboxBackdrop = galleryLightbox.querySelector(".gallery-lightbox__backdrop");
+
+    document.querySelectorAll(".gallery-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        lightboxImage.src = card.dataset.image;
+        lightboxImage.alt = card.dataset.title || "Gallery image";
+        lightboxTitle.textContent = card.dataset.title || "";
+        lightboxCategory.textContent = card.dataset.category || "";
+        lightboxDescription.textContent = card.dataset.description || "";
+
+        galleryLightbox.classList.add("is-open");
+        galleryLightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    function closeGalleryLightbox() {
+      galleryLightbox.classList.remove("is-open");
+      galleryLightbox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      lightboxImage.src = "";
+    }
+
+    lightboxClose.addEventListener("click", closeGalleryLightbox);
+    lightboxBackdrop.addEventListener("click", closeGalleryLightbox);
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        galleryLightbox.classList.contains("is-open")
+      ) {
+        closeGalleryLightbox();
+      }
+    });
+  </script>
 
     <!-- ============ ThreatReady ============
        Shown only when ThreatReady is live. Remove the `hidden` attribute to switch it on and set the link. -->
