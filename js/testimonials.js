@@ -29,46 +29,52 @@
 // No ratings or stars: add them only if students actually gave them.
 
 window.ACADEMY_TESTIMONIALS = [
+  
   {
-    sample: true,
-    name: 'Arun Kumar',
-    course: 'Python Full Stack Development',
-    batch: '2026',
-    quote: 'The practical project work helped me understand how development works beyond classroom concepts. I was able to build a project and explain it confidently.'
-  },
-  {
-    sample: true,
-    name: 'Priya S',
+    // sample: true,
+    name: 'Surendhar',
     course: 'Cloud Security Engineering',
     batch: '2026',
     quote: 'The hands-on approach helped me understand cloud security concepts much better. Working through practical exercises made the learning experience more useful.'
   },
+
   {
-    sample: true,
-    name: 'Karthik R',
-    course: 'Software Testing',
+    // sample: true,
+    name: 'Ezhilarasan',
+    course: 'Python Full Stack Development',
     batch: '2026',
-    quote: 'The training was focused on practical skills and interview preparation. The project-based approach helped me understand what companies actually expect.'
+    quote: 'The practical project work helped me understand how development works beyond classroom concepts. I was able to build a project and explain it confidently.'
   },
+
   {
-    sample: true,
-    name: 'Divya M',
-    course: 'Data Analysis',
+    // sample: true,
+    name: 'Prabu',
+    course: 'SOC / Security Operations',
     batch: '2026',
-    quote: 'I liked the practical learning approach. Instead of only studying concepts, I got the opportunity to work with tools and build something I could explain.'
+    quote: 'The hands-on training helped me understand tools, alerts, networking, and incident handling in a practical way. It gave me the confidence to prepare for real SOC Analyst roles.'
   },
+
   {
-    sample: true,
+    // sample: true,
+    name: 'Harish',
+    course: 'VAPT (Penetration Testing)',
+    batch: '2026',
+    quote: 'I learned how to approach security testing step by step instead of just using tools blindly. The practical exercises made cybersecurity much easier and more interesting to learn'
+  },
+
+  {
+    // sample: true,
     name: 'Santhosh P',
-    course: 'Artificial Intelligence',
+    course: 'Cybersecurity Engineering',
     batch: '2026',
-    quote: 'The project work gave me a better understanding of how AI concepts are applied in real applications.'
+    quote: '“I started with only basic cybersecurity knowledge. The practical labs and real-world scenarios helped me understand how security works beyond just theory. I now feel much more confident pursuing a career in cybersecurity.'
   },
+  
   {
-    sample: true,
+    // sample: true,
     name: 'Naveen K',
     course: 'Python Full Stack Development',
     batch: '2026',
-    quote: 'The combination of learning, practice and project work made the course much more useful for my career preparation.'
+    quote: 'I came in with basic programming knowledge and gradually learned how frontend and backend work together. Building real projects gave me the confidence to start my career as a developer.'
   }
 ];
