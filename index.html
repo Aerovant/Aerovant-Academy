@@ -71,7 +71,8 @@
       <!-- Official logo, blue/dark version for this light background. -->
       <a class="brand" href="index.html" aria-label="Aerovant Academy, home">
         <img class="brand__logo" src="logo/academy-logo-blue.png" alt="Aerovant Academy" width="746" height="240">
-        <span class="brand__text"><span class="brand__name">Aerovant</span><span class="brand__sub">Academy</span></span>
+        <span class="brand__text"><span class="brand__name">Aerovant</span><span
+            class="brand__sub">Academy</span></span>
       </a>
 
       <nav class="nav" id="site-nav" aria-label="Main">
@@ -126,7 +127,10 @@
 
         <figure class="review">
           <div class="review__sheet">
-            <div class="review__bar"><span>you / first-project</span><span class="soft">review, month 4</span></div>
+            <div class="review__bar">
+              <span>you / first-project</span>
+              <!-- <span class="soft">review, month 4</span> -->
+            </div>
             <pre class="review__code"
               aria-label="A few lines of a student's Python code, with line 16 highlighted"><code><span class="ln">def register(email, password):</span><span class="ln">    user = User(email=email)</span><span class="ln is-hl">    user.password = hash_password(password)</span><span class="ln">    db.session.add(user)</span><span class="ln">    db.session.commit()</span><span class="ln">    return user</span></code></pre>
             <p class="review__note"><b>Mentor, on line 16</b><span>Good. Now tell me why you hash here and not in the
@@ -211,7 +215,7 @@
                   <dd>
                     Fee-based.
                   </dd>
-                  
+
                 </dl>
 
                 <a class="link" href="#courses">Choose a course →</a>
@@ -298,7 +302,8 @@
 
         <div class="timeline">
           <div class="timeline__months" aria-hidden="true">
-            <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span><span>After</span></div>
+            <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span><span>After</span>
+          </div>
           <ol>
             <li class="stage stage--learn">
               <span class="stage__when">Months 1 to 3</span>
@@ -357,12 +362,12 @@
         <div class="tracks" data-tracks>
           <div class="tracks__tabs" role="tablist" aria-label="Courses">
             <button class="tracks__tab" type="button" role="tab" id="tab-python" aria-controls="track-python"
-              aria-selected="true" data-status="open"><span class="track__status"
-                data-when="open">1 month</span><span class="track__status" data-when="interest">Register interest</span><span
-                class="tracks__name">Python Full Stack Development</span></button>
+              aria-selected="true" data-status="open"><span class="track__status" data-when="open">1 month</span><span
+                class="track__status" data-when="interest">Register interest</span><span class="tracks__name">Python
+                Full Stack Development</span></button>
             <button class="tracks__tab" type="button" role="tab" id="tab-cloud" aria-controls="track-cloud"
-              aria-selected="false" tabindex="-1" data-status="open"><span class="track__status"
-                data-when="open">1 month</span><span class="track__status" data-when="interest">Register interest</span><span
+              aria-selected="false" tabindex="-1" data-status="open"><span class="track__status" data-when="open">1
+                month</span><span class="track__status" data-when="interest">Register interest</span><span
                 class="tracks__name">Cloud Security Engineering</span></button>
             <!-- Not shown yet. Uncomment a tab together with its panel further down.
             <button class="tracks__tab" type="button" role="tab" id="tab-ai" aria-controls="track-ai"
@@ -383,91 +388,90 @@
           <div class="tracks__panel" role="tabpanel" id="track-python" aria-labelledby="tab-python" tabindex="0"
             data-track="python" data-status="open">
             <article class="track">
-                  <div class="track__top">
-                    <h3 class="display">Python Full Stack Development</h3>
-                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                      <rect class="s" x="2" y="26" width="62" height="48" />
-                      <rect class="f" x="89" y="26" width="62" height="48" />
-                      <rect class="s" x="176" y="26" width="62" height="48" />
-                      <line class="s" x1="64" y1="50" x2="89" y2="50" />
-                      <line class="s" x1="151" y1="50" x2="176" y2="50" /><text x="33" y="55"
-                        text-anchor="middle">React</text><text x="120" y="55" text-anchor="middle">Django</text><text
-                        x="207" y="55" text-anchor="middle">MySQL</text><text class="cap" x="2" y="94">browser → API →
-                        database</text>
-                    </svg>
-                  </div>
+              <div class="track__top">
+                <h3 class="display">Python Full Stack Development</h3>
+                <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                  <rect class="s" x="2" y="26" width="62" height="48" />
+                  <rect class="f" x="89" y="26" width="62" height="48" />
+                  <rect class="s" x="176" y="26" width="62" height="48" />
+                  <line class="s" x1="64" y1="50" x2="89" y2="50" />
+                  <line class="s" x1="151" y1="50" x2="176" y2="50" /><text x="33" y="55"
+                    text-anchor="middle">React</text><text x="120" y="55" text-anchor="middle">Django</text><text
+                    x="207" y="55" text-anchor="middle">MySQL</text><text class="cap" x="2" y="94">browser → API →
+                    database</text>
+                </svg>
+              </div>
 
-                  <dl class="spec">
-                    <dt>Who it’s for</dt>
-                    <dd>Students who want to build software</dd>
-                    <dt>You learn</dt>
-                    <dd class="tools">HTML, CSS, JavaScript, React, Python, Django, Flask, REST APIs, MySQL, Git</dd>
-                    <dt class="build-dt">You build</dt>
-                    <dd class="build-dd">A complete web application with login, a database and a live deployment</dd>
-                    <dt>Where it can lead</dt>
-                    <dd>Junior developer, Python developer, front-end developer</dd>
-                  </dl>
-                  <div class="track__foot">
-                    <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+              <dl class="spec">
+                <dt>Who it’s for</dt>
+                <dd>Students who want to build software</dd>
+                <dt>You learn</dt>
+                <dd class="tools">HTML, CSS, JavaScript, React, Python, Django, Flask, REST APIs, MySQL, Git</dd>
+                <dt class="build-dt">You build</dt>
+                <dd class="build-dd">A complete web application with login, a database and a live deployment</dd>
+                <dt>Where it can lead</dt>
+                <dd>Junior developer, Python developer, front-end developer</dd>
+              </dl>
+              <div class="track__foot">
+                <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
                         class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
                         href="pdf/Refund_Policy.pdf">Refund policy</a></p> -->
 
-                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                      is fixed.</p>
-                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Python Full Stack Development"
-                      data-when="open">Ask for the syllabus →</a>
-                    <a class="btn btn--ink" href="#demo" data-interest="Course"
-                      data-topic="Python Full Stack Development (register interest)" data-when="interest">Register
-                      interest →</a>
-                  </div>
-                </article>
+                <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                  is fixed.</p>
+                <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Python Full Stack Development"
+                  data-when="open">Ask for the syllabus →</a>
+                <a class="btn btn--ink" href="#demo" data-interest="Course"
+                  data-topic="Python Full Stack Development (register interest)" data-when="interest">Register
+                  interest →</a>
+              </div>
+            </article>
           </div>
 
           <div class="tracks__panel" role="tabpanel" id="track-cloud" aria-labelledby="tab-cloud" tabindex="0"
             data-track="cloud" data-status="open" hidden>
             <article class="track">
-                  <div class="track__top">
-                    <h3 class="display">Cloud Security Engineering</h3>
-                    <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
-                      <rect class="s" x="2" y="2" width="236" height="96" stroke-dasharray="5 4" />
-                      <rect class="s" x="18" y="24" width="150" height="60" />
-                      <rect class="f" x="32" y="42" width="60" height="30" />
-                      <rect class="s" x="100" y="42" width="54" height="30" />
-                      <line class="s" x1="168" y1="54" x2="222" y2="54" />
-                      <rect class="k" x="188" y="44" width="18" height="20" /><text class="cap" x="10" y="16">AWS
-                        account</text><text class="cap" x="24" y="37">VPC</text><text class="cap" x="184"
-                        y="82">WAF</text>
-                    </svg>
-                  </div>
+              <div class="track__top">
+                <h3 class="display">Cloud Security Engineering</h3>
+                <svg class="track__motif" viewBox="0 0 240 100" aria-hidden="true">
+                  <rect class="s" x="2" y="2" width="236" height="96" stroke-dasharray="5 4" />
+                  <rect class="s" x="18" y="24" width="150" height="60" />
+                  <rect class="f" x="32" y="42" width="60" height="30" />
+                  <rect class="s" x="100" y="42" width="54" height="30" />
+                  <line class="s" x1="168" y1="54" x2="222" y2="54" />
+                  <rect class="k" x="188" y="44" width="18" height="20" /><text class="cap" x="10" y="16">AWS
+                    account</text><text class="cap" x="24" y="37">VPC</text><text class="cap" x="184" y="82">WAF</text>
+                </svg>
+              </div>
 
-                  <dl class="spec">
-                    <dt>Who it’s for</dt>
-                    <dd>Students aiming at cloud or security roles</dd>
-                    <dt>You learn</dt>
-                    <dd class="tools">AWS core services, IAM, VPC, security groups, WAF, and ethical hacking with Nmap,
-                      Wireshark, Burp Suite and Metasploit</dd>
-                    <dt class="build-dt">You build</dt>
-                    <dd class="build-dd">A secured AWS environment, and a penetration test report on a practice target
-                    </dd>
-                    <dt>Where it can lead</dt>
-                    <dd>Junior security analyst, SOC analyst, cloud support engineer</dd>
-                  </dl>
+              <dl class="spec">
+                <dt>Who it’s for</dt>
+                <dd>Students aiming at cloud or security roles</dd>
+                <dt>You learn</dt>
+                <dd class="tools">AWS core services, IAM, VPC, security groups, WAF, and ethical hacking with Nmap,
+                  Wireshark, Burp Suite and Metasploit</dd>
+                <dt class="build-dt">You build</dt>
+                <dd class="build-dd">A secured AWS environment, and a penetration test report on a practice target
+                </dd>
+                <dt>Where it can lead</dt>
+                <dd>Junior security analyst, SOC analyst, cloud support engineer</dd>
+              </dl>
 
-                  <div class="track__foot">
-                    <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
+              <div class="track__foot">
+                <!-- <p class="small" data-when="open">Next batch starts <span class="tbc">date</span>. ₹<span
                         class="tbc">fee</span>, in <span class="tbc">n</span> instalments. <a
                         href="pdf/Refund_Policy.pdf">Refund policy</a></p> -->
 
-                    <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
-                      is fixed.</p>
-                    <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Cloud Security Engineering"
-                      data-when="open">Ask for the syllabus →</a>
-                    <a class="btn btn--ink" href="#demo" data-interest="Course"
-                      data-topic="Cloud Security Engineering (register interest)" data-when="interest">Register interest
-                      →</a>
-                  </div>
+                <p class="small" data-when="interest">No batch date yet. Register interest and we’ll call you when one
+                  is fixed.</p>
+                <a class="btn btn--ink" href="#demo" data-interest="Course" data-topic="Cloud Security Engineering"
+                  data-when="open">Ask for the syllabus →</a>
+                <a class="btn btn--ink" href="#demo" data-interest="Course"
+                  data-topic="Cloud Security Engineering (register interest)" data-when="interest">Register interest
+                  →</a>
+              </div>
 
-                </article>
+            </article>
           </div>
 
           <!-- Not shown yet. Uncomment a panel together with its tab above.
@@ -649,8 +653,8 @@
           <div class="feebox">
             <strong>This is a training internship. You pay a fee, and <span class="hl">there is no
                 stipend</span>.</strong>
-            <p class="small">Length: <span class="tbc">Customizable</span>. Fee: ₹<span
-                class="tbc">fee-based</span>. Tracks: <span class="tbc">which of the five</span>. Online or in Krishnagiri.
+            <p class="small">Length: <span class="tbc">Customizable</span>. Fee: ₹<span class="tbc">fee-based</span>.
+              Tracks: <span class="tbc">which of the five</span>. Online or in Krishnagiri.
             </p>
           </div>
           <a class="link" href="#demo" data-interest="Internship with training">Ask about the internship →</a>
@@ -818,7 +822,7 @@
          so nobody can mistake sample entries for real feedback. Replace them with real student data
          (with each student's written permission) and remove `sample: true` from each real entry.
          If the list is empty, this whole section hides itself. -->
-    
+
 
     <!-- ============ Academic and institutional proof ============
          PLACEHOLDER. No document has been added yet. The three dashed sheets are empty slots, not claims.
@@ -838,7 +842,7 @@
           </li>
 
          Until at least one document is real, add the `hidden` attribute to this <section>. -->
-    
+
     <!-- <section id="proof" class="section rule-top proofdocs" aria-labelledby="h-proof">
       <div class="wrap">
         <div class="proofdocs__copy">
@@ -871,543 +875,220 @@
 
 
     <!-- ============ Gallery ============ -->
-  <section id="gallery" class="section rule-top gallery-section" aria-labelledby="h-gallery">
-    <div class="wrap">
+    <section id="gallery" class="section rule-top gallery-section" aria-labelledby="h-gallery">
+      <div class="wrap">
 
-      <div class="gallery__header">
-        <div>
-          <p class="kicker">Gallery</p>
-          <h2 id="h-gallery" class="display h2">Moments from learning.</h2>
+        <div class="gallery__header">
+          <div>
+            <p class="kicker">Gallery</p>
+            <h2 id="h-gallery" class="display h2">Moments from learning.</h2>
+          </div>
+
+          <p class="gallery__intro">
+            A glimpse into our workshops, training sessions, student activities and events.
+          </p>
         </div>
 
-        <p class="gallery__intro">
-          A glimpse into our workshops, training sessions, student activities and events.
-        </p>
+        <!-- Gallery Filters -->
+        <div class="gallery__filters" role="tablist" aria-label="Gallery categories">
+          <button class="gallery-filter active" data-filter="all" type="button">All</button>
+          <button class="gallery-filter" data-filter="workshops" type="button">Workshops</button>
+          <button class="gallery-filter" data-filter="events" type="button">Events</button>
+          <button class="gallery-filter" data-filter="training" type="button">Training</button>
+          <button class="gallery-filter" data-filter="students" type="button">Student Activities</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid">
+
+          <!-- SAMPLE GALLERY DATA — REPLACE WITH REAL IMAGES -->
+
+          <article class="gallery-item gallery-item--large" data-category="workshops">
+            <button class="gallery-card" type="button" data-image="academy img/s13.png"
+              data-title="Python Full Stack Workshop" data-category="Workshops"
+              data-description="Hands-on technical learning session.">
+              <img src="academy img/s13.png" alt="Students participating in a Python Full Stack workshop"
+                loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Workshops</span>
+                <span class="gallery-title">Python Full Stack Workshop</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item" data-category="workshops">
+            <button class="gallery-card" type="button" data-image="academy img/s1.png"
+              data-title="Cloud Security Workshop" data-category="Workshops"
+              data-description="Hands-on cloud security learning session.">
+              <img src="academy img/s1.png" alt="Students participating in a cloud security workshop" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Workshops</span>
+                <span class="gallery-title">Cloud Security Workshop</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item" data-category="students">
+            <button class="gallery-card" type="button" data-image="academy img/s3.png"
+              data-title="Student Project Presentation" data-category="Student Activities"
+              data-description="Students presenting their project work.">
+              <img src="academy img/s3.png" alt="Students presenting their project" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Student Activities</span>
+                <span class="gallery-title">Student Project Presentation</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item" data-category="training">
+            <button class="gallery-card" type="button" data-image="academy img/s4.png"
+              data-title="Technical Training Session" data-category="Training"
+              data-description="Practical technology training session.">
+              <img src="academy img/s4.png" alt="Students attending a technical training session" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Training</span>
+                <span class="gallery-title">Technical Training Session</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item" data-category="training">
+            <button class="gallery-card" type="button" data-image="academy img/s5.png"
+              data-title="Career & Interview Preparation" data-category="Training"
+              data-description="Career and interview preparation session.">
+              <img src="academy img/s5.png" alt="Students participating in a career preparation session" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Training</span>
+                <span class="gallery-title">Career & Interview Preparation</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item" data-category="students">
+            <button class="gallery-card" type="button" data-image="academy img/s9.png"
+              data-title="Student Team Activity" data-category="Student Activities"
+              data-description="Collaborative student activity.">
+              <img src="academy img/s9.png" alt="Students working together during a team activity" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Student Activities</span>
+                <span class="gallery-title">Student Team Activity</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item gallery-item--wide" data-category="events">
+            <button class="gallery-card" type="button" data-image="academy img/s6.png"
+              data-title="Technology Awareness Workshop" data-category="Events"
+              data-description="Technology-focused awareness session.">
+              <img src="academy img/s6.png" alt="Technology awareness workshop at Aerovant Academy" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Events</span>
+                <span class="gallery-title">Technology Awareness Workshop</span>
+              </span>
+            </button>
+          </article>
+
+          <article class="gallery-item" data-category="students">
+            <button class="gallery-card" type="button" data-image="gallery/images/project-demo.jpg"
+              data-title="Project Demonstration" data-category="Student Activities"
+              data-description="Students demonstrating their project work.">
+              <img src="academy img/s11.png" alt="Students demonstrating their project" loading="lazy">
+              <span class="gallery-overlay">
+                <span class="gallery-meta">Student Activities</span>
+                <span class="gallery-title">Project Demonstration</span>
+              </span>
+            </button>
+          </article>
+
+        </div>
       </div>
+    </section>
 
-      <!-- Gallery Filters -->
-      <div class="gallery__filters" role="tablist" aria-label="Gallery categories">
-        <button class="gallery-filter active" data-filter="all" type="button">All</button>
-        <button class="gallery-filter" data-filter="workshops" type="button">Workshops</button>
-        <button class="gallery-filter" data-filter="events" type="button">Events</button>
-        <button class="gallery-filter" data-filter="training" type="button">Training</button>
-        <button class="gallery-filter" data-filter="students" type="button">Student Activities</button>
-      </div>
+    <!-- Gallery Lightbox -->
+    <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+      <div class="gallery-lightbox__backdrop"></div>
 
-      <!-- Gallery Grid -->
-      <div class="gallery-grid">
+      <div class="gallery-lightbox__content" role="dialog" aria-modal="true">
 
-        <!-- SAMPLE GALLERY DATA — REPLACE WITH REAL IMAGES -->
+        <button type="button" class="gallery-lightbox__close" aria-label="Close gallery">
+          &times;
+        </button>
 
-        <article class="gallery-item gallery-item--large" data-category="workshops">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s13.png"
-            data-title="Python Full Stack Workshop"
-            data-category="Workshops"
-            data-description="Hands-on technical learning session."
-          >
-            <img
-              src="academy img/s13.png"
-              alt="Students participating in a Python Full Stack workshop"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Workshops</span>
-              <span class="gallery-title">Python Full Stack Workshop</span>
-            </span>
-          </button>
-        </article>
+        <img class="gallery-lightbox__image" src="" alt="">
 
-        <article class="gallery-item" data-category="workshops">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s1.png"
-            data-title="Cloud Security Workshop"
-            data-category="Workshops"
-            data-description="Hands-on cloud security learning session."
-          >
-            <img
-              src="academy img/s1.png"
-              alt="Students participating in a cloud security workshop"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Workshops</span>
-              <span class="gallery-title">Cloud Security Workshop</span>
-            </span>
-          </button>
-        </article>
-
-        <article class="gallery-item" data-category="students">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s3.png"
-            data-title="Student Project Presentation"
-            data-category="Student Activities"
-            data-description="Students presenting their project work."
-          >
-            <img
-              src="academy img/s3.png"
-              alt="Students presenting their project"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Student Activities</span>
-              <span class="gallery-title">Student Project Presentation</span>
-            </span>
-          </button>
-        </article>
-
-        <article class="gallery-item" data-category="training">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s4.png"
-            data-title="Technical Training Session"
-            data-category="Training"
-            data-description="Practical technology training session."
-          >
-            <img
-              src="academy img/s4.png"
-              alt="Students attending a technical training session"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Training</span>
-              <span class="gallery-title">Technical Training Session</span>
-            </span>
-          </button>
-        </article>
-
-        <article class="gallery-item" data-category="training">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s5.png"
-            data-title="Career & Interview Preparation"
-            data-category="Training"
-            data-description="Career and interview preparation session."
-          >
-            <img
-              src="academy img/s5.png"
-              alt="Students participating in a career preparation session"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Training</span>
-              <span class="gallery-title">Career & Interview Preparation</span>
-            </span>
-          </button>
-        </article>
-
-        <article class="gallery-item" data-category="students">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s9.png"
-            data-title="Student Team Activity"
-            data-category="Student Activities"
-            data-description="Collaborative student activity."
-          >
-            <img
-              src="academy img/s9.png"
-              alt="Students working together during a team activity"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Student Activities</span>
-              <span class="gallery-title">Student Team Activity</span>
-            </span>
-          </button>
-        </article>
-
-        <article class="gallery-item gallery-item--wide" data-category="events">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="academy img/s6.png"
-            data-title="Technology Awareness Workshop"
-            data-category="Events"
-            data-description="Technology-focused awareness session."
-          >
-            <img
-              src="academy img/s6.png"
-              alt="Technology awareness workshop at Aerovant Academy"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Events</span>
-              <span class="gallery-title">Technology Awareness Workshop</span>
-            </span>
-          </button>
-        </article>
-
-        <article class="gallery-item" data-category="students">
-          <button
-            class="gallery-card"
-            type="button"
-            data-image="gallery/images/project-demo.jpg"
-            data-title="Project Demonstration"
-            data-category="Student Activities"
-            data-description="Students demonstrating their project work."
-          >
-            <img
-              src="academy img/s11.png"
-              alt="Students demonstrating their project"
-              loading="lazy"
-            >
-            <span class="gallery-overlay">
-              <span class="gallery-meta">Student Activities</span>
-              <span class="gallery-title">Project Demonstration</span>
-            </span>
-          </button>
-        </article>
+        <div class="gallery-lightbox__info">
+          <span class="gallery-lightbox__category"></span>
+          <h3 class="gallery-lightbox__title"></h3>
+          <p class="gallery-lightbox__description"></p>
+        </div>
 
       </div>
     </div>
-  </section>
 
-  <!-- Gallery Lightbox -->
-  <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
-    <div class="gallery-lightbox__backdrop"></div>
+    <style>
+      /* ============ Gallery ============ */
 
-    <div class="gallery-lightbox__content" role="dialog" aria-modal="true">
-
-      <button
-        type="button"
-        class="gallery-lightbox__close"
-        aria-label="Close gallery"
-      >
-        &times;
-      </button>
-
-      <img
-        class="gallery-lightbox__image"
-        src=""
-        alt=""
-      >
-
-      <div class="gallery-lightbox__info">
-        <span class="gallery-lightbox__category"></span>
-        <h3 class="gallery-lightbox__title"></h3>
-        <p class="gallery-lightbox__description"></p>
-      </div>
-
-    </div>
-  </div>
-
-  <style>
-    /* ============ Gallery ============ */
-
-    .gallery-section {
-      overflow: hidden;
-    }
-
-    .gallery__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 50px;
-      margin-bottom: 42px;
-    }
-
-    .gallery__intro {
-      max-width: 430px;
-      margin: 0;
-      line-height: 1.7;
-    }
-
-    .gallery__filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    .gallery-filter {
-      appearance: none;
-      border: 1px solid var(--ink);
-      background: transparent;
-      color: var(--ink);
-      padding: 10px 18px;
-      font: inherit;
-      cursor: pointer;
-      transition: all .25s ease;
-    }
-
-    /* Hover: light band behind dark text. Active: dark button with light text, like the site's ink buttons.
-       (Previously `background: currentColor` picked up the white text colour, so the button went blank.) */
-    @media (hover: hover) {
-      .gallery-filter:hover {
-        background: var(--band);
-        color: var(--ink);
-      }
-    }
-
-    .gallery-filter.active,
-    .gallery-filter.active:hover {
-      background: var(--ink);
-      border-color: var(--ink);
-      color: var(--paper);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: 260px;
-      gap: 14px;
-    }
-
-    .gallery-item {
-      min-width: 0;
-    }
-
-    .gallery-item--large {
-      grid-column: span 2;
-      grid-row: span 2;
-    }
-
-    .gallery-item--wide {
-      grid-column: span 2;
-    }
-
-    .gallery-card {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      border: 0;
-      background: #111;
-      overflow: hidden;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .gallery-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform .5s ease;
-    }
-
-    .gallery-card:hover img {
-      transform: scale(1.04);
-    }
-
-    .gallery-overlay {
-      position: absolute;
-      inset: auto 0 0;
-      padding: 55px 24px 22px;
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, .82),
-        rgba(0, 0, 0, 0)
-      );
-      color: #fff;
-    }
-
-    .gallery-meta {
-      display: block;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      margin-bottom: 7px;
-      opacity: .8;
-    }
-
-    .gallery-title {
-      display: block;
-      font-size: 19px;
-      font-weight: 600;
-    }
-
-    .gallery-item.is-hidden {
-      display: none;
-    }
-
-    /* ============ Courses: tabs above, full-width panel below ============ */
-    .tracks__tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .tracks__tab {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 3px;
-      min-width: min(100%, 300px);
-      padding: 14px 22px 15px;
-      background: var(--sheet);
-      border: 1.5px solid var(--ink);
-      border-radius: var(--radius);
-      color: var(--ink);
-      text-align: left;
-    }
-
-    .tracks__name {
-      font-family: var(--display);
-      font-stretch: 75%;
-      font-weight: 700;
-      font-size: 1.5rem;
-      line-height: 1.05;
-    }
-
-    @media (hover: hover) {
-      .tracks__tab:hover {
-        background: var(--band);
-      }
-    }
-
-    .tracks__tab[aria-selected="true"],
-    .tracks__tab[aria-selected="true"]:hover {
-      background: var(--hl);
-    }
-
-    /* A small pointer under the selected course, aimed at the content it opens. */
-    .tracks__tab[aria-selected="true"]::after {
-      content: "";
-      position: absolute;
-      left: 22px;
-      bottom: -11px;
-      border-left: 9px solid transparent;
-      border-right: 9px solid transparent;
-      border-top: 9px solid var(--ink);
-    }
-
-    .tracks__panel {
-      background: var(--sheet);
-      border: 1.5px solid var(--ink);
-      padding: clamp(22px, 3vw, 40px);
-    }
-
-    .tracks__panel .spec {
-      grid-template-columns: minmax(110px, 200px) minmax(0, 1fr);
-    }
-
-    /* The old accordion hid this title on smaller screens; in the panel it is always shown. */
-    .js .tracks__panel .track__top h3 {
-      display: block;
-    }
-
-    @media (max-width: 560px) {
-      .tracks__tab {
-        flex: 1 1 100%;
-      }
-    }
-
-    /* Phones: each label sits above its text, so the details use the full panel width. */
-    @media (max-width: 600px) {
-      .tracks__panel .spec {
-        grid-template-columns: minmax(0, 1fr);
+      .gallery-section {
+        overflow: hidden;
       }
 
-      .tracks__panel .spec dt {
-        padding: 14px 0 2px;
-      }
-
-      .tracks__panel .spec dd,
-      .tracks__panel .spec dd.build-dd {
-        padding: 0 0 14px;
-        border-top: 0;
-      }
-    }
-
-    /* ============ Lightbox ============ */
-
-    .gallery-lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 30px;
-    }
-
-    .gallery-lightbox.is-open {
-      display: flex;
-    }
-
-    .gallery-lightbox__backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, .88);
-    }
-
-    .gallery-lightbox__content {
-      position: relative;
-      z-index: 1;
-      width: min(1000px, 95vw);
-      max-height: 92vh;
-      overflow: auto;
-      background: #fff;
-    }
-
-    .gallery-lightbox__image {
-      display: block;
-      width: 100%;
-      max-height: 72vh;
-      object-fit: contain;
-      background: #111;
-    }
-
-    .gallery-lightbox__info {
-      padding: 22px 26px 26px;
-    }
-
-    .gallery-lightbox__category {
-      display: block;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      margin-bottom: 7px;
-      opacity: .65;
-    }
-
-    .gallery-lightbox__title {
-      margin: 0 0 8px;
-    }
-
-    .gallery-lightbox__description {
-      margin: 0;
-    }
-
-    .gallery-lightbox__close {
-      position: absolute;
-      z-index: 2;
-      top: 12px;
-      right: 12px;
-      width: 42px;
-      height: 42px;
-      border: 0;
-      background: #fff;
-      font-size: 28px;
-      line-height: 1;
-      cursor: pointer;
-    }
-
-    @media (max-width: 900px) {
       .gallery__header {
-        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 50px;
+        margin-bottom: 42px;
       }
 
       .gallery__intro {
-        margin-top: 18px;
+        max-width: 430px;
+        margin: 0;
+        line-height: 1.7;
+      }
+
+      .gallery__filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+
+      .gallery-filter {
+        appearance: none;
+        border: 1px solid var(--ink);
+        background: transparent;
+        color: var(--ink);
+        padding: 10px 18px;
+        font: inherit;
+        cursor: pointer;
+        transition: all .25s ease;
+      }
+
+      /* Hover: light band behind dark text. Active: dark button with light text, like the site's ink buttons.
+       (Previously `background: currentColor` picked up the white text colour, so the button went blank.) */
+      @media (hover: hover) {
+        .gallery-filter:hover {
+          background: var(--band);
+          color: var(--ink);
+        }
+      }
+
+      .gallery-filter.active,
+      .gallery-filter.active:hover {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--paper);
       }
 
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 230px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 260px;
+        gap: 14px;
+      }
+
+      .gallery-item {
+        min-width: 0;
       }
 
       .gallery-item--large {
@@ -1418,104 +1099,346 @@
       .gallery-item--wide {
         grid-column: span 2;
       }
-    }
 
-    @media (max-width: 600px) {
-      .gallery__filters {
-        gap: 7px;
+      .gallery-card {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: #111;
+        overflow: hidden;
+        cursor: pointer;
+        text-align: left;
       }
 
-      .gallery-filter {
-        padding: 8px 13px;
-        font-size: 13px;
+      .gallery-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .5s ease;
       }
 
-      .gallery-grid {
-        grid-template-columns: 1fr;
-        grid-auto-rows: 260px;
+      .gallery-card:hover img {
+        transform: scale(1.04);
       }
 
-      .gallery-item--large,
-      .gallery-item--wide {
-        grid-column: span 1;
-        grid-row: span 1;
+      .gallery-overlay {
+        position: absolute;
+        inset: auto 0 0;
+        padding: 55px 24px 22px;
+        background: linear-gradient(to top,
+            rgba(0, 0, 0, .82),
+            rgba(0, 0, 0, 0));
+        color: #fff;
       }
+
+      .gallery-meta {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        margin-bottom: 7px;
+        opacity: .8;
+      }
+
+      .gallery-title {
+        display: block;
+        font-size: 19px;
+        font-weight: 600;
+      }
+
+      .gallery-item.is-hidden {
+        display: none;
+      }
+
+      /* ============ Courses: tabs above, full-width panel below ============ */
+      .tracks__tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .tracks__tab {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        min-width: min(100%, 300px);
+        padding: 14px 22px 15px;
+        background: var(--sheet);
+        border: 1.5px solid var(--ink);
+        border-radius: var(--radius);
+        color: var(--ink);
+        text-align: left;
+      }
+
+      .tracks__name {
+        font-family: var(--display);
+        font-stretch: 75%;
+        font-weight: 700;
+        font-size: 1.5rem;
+        line-height: 1.05;
+      }
+
+      @media (hover: hover) {
+        .tracks__tab:hover {
+          background: var(--band);
+        }
+      }
+
+      .tracks__tab[aria-selected="true"],
+      .tracks__tab[aria-selected="true"]:hover {
+        background: var(--hl);
+      }
+
+      /* A small pointer under the selected course, aimed at the content it opens. */
+      .tracks__tab[aria-selected="true"]::after {
+        content: "";
+        position: absolute;
+        left: 22px;
+        bottom: -11px;
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        border-top: 9px solid var(--ink);
+      }
+
+      .tracks__panel {
+        background: var(--sheet);
+        border: 1.5px solid var(--ink);
+        padding: clamp(22px, 3vw, 40px);
+      }
+
+      .tracks__panel .spec {
+        grid-template-columns: minmax(110px, 200px) minmax(0, 1fr);
+      }
+
+      /* The old accordion hid this title on smaller screens; in the panel it is always shown. */
+      .js .tracks__panel .track__top h3 {
+        display: block;
+      }
+
+      @media (max-width: 560px) {
+        .tracks__tab {
+          flex: 1 1 100%;
+        }
+      }
+
+      /* Phones: each label sits above its text, so the details use the full panel width. */
+      @media (max-width: 600px) {
+        .tracks__panel .spec {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .tracks__panel .spec dt {
+          padding: 14px 0 2px;
+        }
+
+        .tracks__panel .spec dd,
+        .tracks__panel .spec dd.build-dd {
+          padding: 0 0 14px;
+          border-top: 0;
+        }
+      }
+
+      /* ============ Lightbox ============ */
 
       .gallery-lightbox {
-        padding: 15px;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
       }
-    }
-  </style>
 
-  <script>
-    /* ============ Gallery Filters ============ */
+      .gallery-lightbox.is-open {
+        display: flex;
+      }
 
-    const galleryFilters = document.querySelectorAll(".gallery-filter");
-    const galleryItems = document.querySelectorAll(".gallery-item");
+      .gallery-lightbox__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, .88);
+      }
 
-    galleryFilters.forEach((filter) => {
-      filter.addEventListener("click", () => {
-        const category = filter.dataset.filter;
+      .gallery-lightbox__content {
+        position: relative;
+        z-index: 1;
+        width: min(1000px, 95vw);
+        max-height: 92vh;
+        overflow: auto;
+        background: #fff;
+      }
 
-        galleryFilters.forEach((button) => {
-          button.classList.remove("active");
-        });
+      .gallery-lightbox__image {
+        display: block;
+        width: 100%;
+        max-height: 72vh;
+        object-fit: contain;
+        background: #111;
+      }
 
-        filter.classList.add("active");
+      .gallery-lightbox__info {
+        padding: 22px 26px 26px;
+      }
 
-        galleryItems.forEach((item) => {
-          const matches =
-            category === "all" ||
-            item.dataset.category === category;
+      .gallery-lightbox__category {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        margin-bottom: 7px;
+        opacity: .65;
+      }
 
-          item.classList.toggle("is-hidden", !matches);
+      .gallery-lightbox__title {
+        margin: 0 0 8px;
+      }
+
+      .gallery-lightbox__description {
+        margin: 0;
+      }
+
+      .gallery-lightbox__close {
+        position: absolute;
+        z-index: 2;
+        top: 12px;
+        right: 12px;
+        width: 42px;
+        height: 42px;
+        border: 0;
+        background: #fff;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      @media (max-width: 900px) {
+        .gallery__header {
+          display: block;
+        }
+
+        .gallery__intro {
+          margin-top: 18px;
+        }
+
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+          grid-auto-rows: 230px;
+        }
+
+        .gallery-item--large {
+          grid-column: span 2;
+          grid-row: span 2;
+        }
+
+        .gallery-item--wide {
+          grid-column: span 2;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .gallery__filters {
+          gap: 7px;
+        }
+
+        .gallery-filter {
+          padding: 8px 13px;
+          font-size: 13px;
+        }
+
+        .gallery-grid {
+          grid-template-columns: 1fr;
+          grid-auto-rows: 260px;
+        }
+
+        .gallery-item--large,
+        .gallery-item--wide {
+          grid-column: span 1;
+          grid-row: span 1;
+        }
+
+        .gallery-lightbox {
+          padding: 15px;
+        }
+      }
+    </style>
+
+    <script>
+      /* ============ Gallery Filters ============ */
+
+      const galleryFilters = document.querySelectorAll(".gallery-filter");
+      const galleryItems = document.querySelectorAll(".gallery-item");
+
+      galleryFilters.forEach((filter) => {
+        filter.addEventListener("click", () => {
+          const category = filter.dataset.filter;
+
+          galleryFilters.forEach((button) => {
+            button.classList.remove("active");
+          });
+
+          filter.classList.add("active");
+
+          galleryItems.forEach((item) => {
+            const matches =
+              category === "all" ||
+              item.dataset.category === category;
+
+            item.classList.toggle("is-hidden", !matches);
+          });
         });
       });
-    });
 
-    /* ============ Gallery Lightbox ============ */
+      /* ============ Gallery Lightbox ============ */
 
-    const galleryLightbox = document.getElementById("galleryLightbox");
-    const lightboxImage = galleryLightbox.querySelector(".gallery-lightbox__image");
-    const lightboxTitle = galleryLightbox.querySelector(".gallery-lightbox__title");
-    const lightboxCategory = galleryLightbox.querySelector(".gallery-lightbox__category");
-    const lightboxDescription = galleryLightbox.querySelector(".gallery-lightbox__description");
-    const lightboxClose = galleryLightbox.querySelector(".gallery-lightbox__close");
-    const lightboxBackdrop = galleryLightbox.querySelector(".gallery-lightbox__backdrop");
+      const galleryLightbox = document.getElementById("galleryLightbox");
+      const lightboxImage = galleryLightbox.querySelector(".gallery-lightbox__image");
+      const lightboxTitle = galleryLightbox.querySelector(".gallery-lightbox__title");
+      const lightboxCategory = galleryLightbox.querySelector(".gallery-lightbox__category");
+      const lightboxDescription = galleryLightbox.querySelector(".gallery-lightbox__description");
+      const lightboxClose = galleryLightbox.querySelector(".gallery-lightbox__close");
+      const lightboxBackdrop = galleryLightbox.querySelector(".gallery-lightbox__backdrop");
 
-    document.querySelectorAll(".gallery-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        lightboxImage.src = card.dataset.image;
-        lightboxImage.alt = card.dataset.title || "Gallery image";
-        lightboxTitle.textContent = card.dataset.title || "";
-        lightboxCategory.textContent = card.dataset.category || "";
-        lightboxDescription.textContent = card.dataset.description || "";
+      document.querySelectorAll(".gallery-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          lightboxImage.src = card.dataset.image;
+          lightboxImage.alt = card.dataset.title || "Gallery image";
+          lightboxTitle.textContent = card.dataset.title || "";
+          lightboxCategory.textContent = card.dataset.category || "";
+          lightboxDescription.textContent = card.dataset.description || "";
 
-        galleryLightbox.classList.add("is-open");
-        galleryLightbox.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
+          galleryLightbox.classList.add("is-open");
+          galleryLightbox.setAttribute("aria-hidden", "false");
+          document.body.style.overflow = "hidden";
+        });
       });
-    });
 
-    function closeGalleryLightbox() {
-      galleryLightbox.classList.remove("is-open");
-      galleryLightbox.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-      lightboxImage.src = "";
-    }
-
-    lightboxClose.addEventListener("click", closeGalleryLightbox);
-    lightboxBackdrop.addEventListener("click", closeGalleryLightbox);
-
-    document.addEventListener("keydown", (event) => {
-      if (
-        event.key === "Escape" &&
-        galleryLightbox.classList.contains("is-open")
-      ) {
-        closeGalleryLightbox();
+      function closeGalleryLightbox() {
+        galleryLightbox.classList.remove("is-open");
+        galleryLightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        lightboxImage.src = "";
       }
-    });
-  </script>
+
+      lightboxClose.addEventListener("click", closeGalleryLightbox);
+      lightboxBackdrop.addEventListener("click", closeGalleryLightbox);
+
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.key === "Escape" &&
+          galleryLightbox.classList.contains("is-open")
+        ) {
+          closeGalleryLightbox();
+        }
+      });
+    </script>
 
     <!-- ============ ThreatReady ============
        Shown only when ThreatReady is live. Remove the `hidden` attribute to switch it on and set the link. -->
@@ -1591,7 +1514,8 @@
           <p>Students here don’t only attend classes. They learn, practise, build a project and prepare for interviews.
             These are their words, next to what they built.</p>
         </div>
-        <p class="draft" id="voices-sample-note" hidden><span class="tbc">Sample entries, shown to check the layout. They
+        <p class="draft" id="voices-sample-note" hidden><span class="tbc">Sample entries, shown to check the layout.
+            They
             are not real students or real feedback</span></p>
         <div id="voices-lead"></div>
         <ul class="voices__more" id="voices-more"></ul>
@@ -1753,7 +1677,7 @@
           <p class="form__status" id="form-status" role="status" aria-live="polite" hidden></p>
           <p class="form__fine">We’ll call you within one working day. We don’t share your number.</p>
         </form>
-        
+
       </div>
     </section>
 
@@ -1765,9 +1689,10 @@
         <div class="site-footer__brand">
           <!-- Official logo, white version for this dark background. -->
           <a class="brand" href="index.html" aria-label="Aerovant Academy, home">
-        <img class="brand__logo" src="logo/academy-logo-white.png" alt="Aerovant Academy" width="743" height="240">
-        <span class="brand__text"><span class="brand__name">Aerovant</span><span class="brand__sub">Academy</span></span>
-      </a>
+            <img class="brand__logo" src="logo/academy-logo-white.png" alt="Aerovant Academy" width="743" height="240">
+            <span class="brand__text"><span class="brand__name">Aerovant</span><span
+                class="brand__sub">Academy</span></span>
+          </a>
           <p class="site-footer__tag">Learn from the people who build technology.</p>
           <p>The training arm of <a href="http://aerovanttech.com/" rel="noopener">Aerovant Technologies</a>.</p>
           <address>P. No. 34, Radha Rayan Radiance, D. No 1/148/22, Rayakottai Rd, Indl. Estate, Wahab Nagar,
@@ -1790,12 +1715,15 @@
           <a href="#students">Student testimonials</a>
           <a href="#colleges">For colleges</a>
         </div>
-        
+
         <div>
           <h2>Legal</h2>
-          <a class="newtab" href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy<span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
-          <a class="newtab" href="terms-and-conditions.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions<span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
-          <a class="newtab" href="refund-policy.html" target="_blank" rel="noopener noreferrer">Refund &amp; Cancellation Policy<span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="newtab" href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy<span
+              aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="newtab" href="terms-and-conditions.html" target="_blank" rel="noopener noreferrer">Terms &amp;
+            Conditions<span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          <a class="newtab" href="refund-policy.html" target="_blank" rel="noopener noreferrer">Refund &amp;
+            Cancellation Policy<span aria-hidden="true"> ↗</span><span class="sr-only"> (opens in a new tab)</span></a>
         </div>
 
         <div>
@@ -1804,7 +1732,7 @@
           <a href="https://wa.me/919042647714">WhatsApp</a>
           <a href="mailto:support@aerovantacademy.com">support@<wbr>aerovantacademy.com</a>
         </div>
-        
+
       </div>
 
       <div class="base">
